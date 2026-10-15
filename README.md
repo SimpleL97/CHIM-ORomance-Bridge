@@ -1,3 +1,5 @@
+![CHIM ORomance Bridge](art/banner.png)
+
 # CHIM ORomance Bridge
 
 A Skyrim SE/AE mod by **SaurOff** that connects [CHIM](https://www.nexusmods.com/skyrimspecialedition/mods/126330)
@@ -87,6 +89,7 @@ server/
 mcm/                  MCM Helper menu (config.json, settings.ini) and translations/
 fomod/                FOMOD installer (info.xml, ModuleConfig.xml)
 docs/                 player README, CHANGELOG, Nexus page texts
+art/                  banner generator and the banner (README, Nexus, FOMOD installer)
 stubs/                declaration-only Papyrus files for the compiler (not shipped)
 make_esp.py           writes the plugin CHIMORomanceBridge.esp and its .seq file
 compile_scripts.ps1   compiles the Papyrus scripts

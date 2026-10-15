@@ -17,4 +17,5 @@ mcm/translations/*.txt binary
 *.bsa binary
 *.dwpkg binary
 *.png binary
+*.jpg binary
 *.zip binary

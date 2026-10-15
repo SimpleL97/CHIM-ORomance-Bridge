@@ -101,6 +101,7 @@ against a live CHIM server plugin folder and an installed game `Data` folder.
 | In the release zip | Source in this repository | Made by |
 |---|---|---|
 | `fomod/info.xml`, `fomod/ModuleConfig.xml` | `fomod/` | copied |
+| `fomod/images/banner.jpg` (installer picture) | `art/make_banner.py` -> `art/render_banner.ps1` | rendered, committed |
 | `README.txt`, `CHANGELOG.txt` | `docs/` | copied |
 | `00 Core/CHIMORomanceBridge.esp`, `00 Core/SEQ/CHIMORomanceBridge.seq` | `make_esp.py` | step 2 |
 | `00 Core/Scripts/COR*.pex` | `src/Scripts/Source/COR*.psc` | step 3 |
@@ -143,7 +144,14 @@ The version must be the same in four places - `build.py` stops if they differ:
 `VERSION` in `localize.py` (the menu title). Every published change needs a new version:
 CHIM only re-installs the server package when the version changes.
 
-## 5. Quick test in game
+## 5. The banner
+
+`python3 -I art/make_banner.py` writes `art/banner.svg` / `banner.html` (original artwork,
+no third-party logos); `art/render_banner.ps1` renders it with Microsoft Edge headless to
+`art/banner.png` (1920x1080: README and Nexus) and `fomod/images/banner.jpg` (1280x720: the
+picture the FOMOD installer shows in Vortex and MO2). Both pictures are committed.
+
+## 6. Quick test in game
 
 1. Install the release zip with Vortex or MO2.
 2. Start the CHIM server, then the game, and load a save.
