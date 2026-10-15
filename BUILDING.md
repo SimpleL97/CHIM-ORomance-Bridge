@@ -150,6 +150,9 @@ CHIM only re-installs the server package when the version changes.
 no third-party logos); `art/render_banner.ps1` renders it with Microsoft Edge headless to
 `art/banner.png` (1920x1080: README and Nexus) and `fomod/images/banner.jpg` (1280x720: the
 picture the FOMOD installer shows in Vortex and MO2). Both pictures are committed.
+README.md shows the banner by its address at a fixed commit (GitHub keeps serving a cached
+copy under the plain path for a while): after committing a new banner, put that commit in
+the README link.
 
 ## 6. Quick test in game
 

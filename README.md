@@ -1,4 +1,4 @@
-![CHIM ORomance Bridge](art/banner.png?v=2)
+![CHIM ORomance Bridge](https://raw.githubusercontent.com/SimpleL97/CHIM-ORomance-Bridge/66fa6c2fe6538578c5359cb3dc6f58bcc9dc8624/art/banner.png)
 
 # CHIM ORomance Bridge
 
