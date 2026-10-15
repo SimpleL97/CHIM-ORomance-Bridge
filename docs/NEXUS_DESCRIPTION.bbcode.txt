@@ -1,0 +1,95 @@
+[center][size=6][b]CHIM ORomance Bridge[/b][/size]
+[size=3]Let your CHIM AI companions fall in love, marry you - and live as your spouses.[/size]
+[b]Open source:[/b] [url=https://github.com/SimpleL97/CHIM-ORomance-Bridge]github.com/SimpleL97/CHIM-ORomance-Bridge[/url]
+[b]Companion of my other mod:[/b] [url=https://www.nexusmods.com/skyrimspecialedition/mods/194761]CHIM OStim Bridge[/url] (optional, recommended)[/center]
+
+[size=4][b]What is this?[/b][/size]
+[url=https://www.nexusmods.com/skyrimspecialedition/mods/126330]CHIM[/url] gives NPCs a mind and a voice. [url=https://www.nexusmods.com/skyrimspecialedition/mods/81635]ORomance Plus[/url] gives Skyrim real relationships: affection, love, partners, polygamy. This mod connects the two: what you say and do in a CHIM conversation counts in ORomance, agents become your partner and marry you when they want to, and once married they live as your spouses - with each other, with the household and with you.
+
+[size=4][b]Features[/b][/size]
+[b]AI actions[/b] (appear in CHIM's action list, all done through ORomance Plus)
+[list]
+[*][b]Feel_Affection[/b] - a compliment that lands, a thoughtful gift, real care, a tender kiss or a declaration of love raises ORomance's like, and love for the deepest moments. Limited per day, so one chatty evening does not win anyone over.
+[*][b]Feel_Hurt[/b] - insults, cruelty and cheating raise dislike.
+[*][b]Become_Partner[/b] - the agent agrees to be your girlfriend or boyfriend.
+[*][b]Marry_Player[/b] - the agent says yes to your proposal (you wear an Amulet of Mara). The first spouse gets the vanilla engagement and the wedding at the Temple of Mara, every later one is married at once - as many spouses as ORomance Plus allows.
+[*][b]Take_Household_Duty[/b] - a spouse takes on a household duty (cooking, cleaning, guarding the house...), and all spouses remember who does what.
+[*][b]Give_Homemade_Meal[/b] - a spouse cooks you a meal (ORomance, once a day).
+[/list]
+Every result is reported back to CHIM, so "not enough love yet" or "you are already engaged" is answered in character instead of the action silently failing.
+
+[b]ORomance's odds - your choice[/b]
+With "Use ORomance's odds" on (default), becoming a couple and marrying also need ORomance Plus's own check: love, level, Speech, fame. Switch it off and the agent's yes in the conversation is enough.
+
+[b]The proposal line is back[/b]
+ORomance Plus hides the vanilla marriage dialogue. This mod puts [i]"(Amulet of Mara) Will you marry me?"[/i] back into the normal dialogue menu, for anyone who is at least your friend and not married to you yet.
+
+[b]Feelings in words[/b]
+Every agent's ORomance like, love and dislike for you go into their prompt ("you are in love with...", "you are angry with..."), so what they say fits the game.
+
+[b]Married life[/b] (any number of spouses)
+[list]
+[*]Spouses know they are married to you and who the other spouses are - warmth, rivalry or jealousy follow their own character.
+[*]When two or more are together, now and then one starts talking to another: about you, the household and its duties, the children they want, or each other.
+[*][b]The marital duty[/b] - the longer it has been since you last made love to a spouse, the more openly they ask for it, sweetly or sharply as their character is. Set the usual wait in the MCM and per spouse ("Name=24", 0 = never). With [url=https://www.nexusmods.com/skyrimspecialedition/mods/194761]CHIM OStim Bridge[/url] they start the scene themselves.
+[/list]
+
+[b]Children[/b] (for the people you name in the MCM)
+[list]
+[*]They want a child with you and show it.
+[*]With [url=https://www.nexusmods.com/skyrimspecialedition/mods/13068]Fertility Mode 3[/url] and its [url=https://www.nexusmods.com/skyrimspecialedition/mods/46820]Fixes and Updates[/url] they also know where they are: before ovulation, ovulating, after it, on their period, pregnant (and how far) or recovering after a birth - and so do spouses and partners.
+[*]Fertility Mode's own OStim support only hears the player's scenes; this mod tells it about vaginal climaxes in every OStim Standalone scene, so spouses and NPC couples can become pregnant too.
+[/list]
+
+[b]Languages[/b]
+The MCM is translated into English, Russian, Ukrainian, German, French, Spanish, Italian, Polish, Czech, Portuguese, Japanese and Chinese and follows the game language; other game languages show it in English.
+
+[size=4][b]Requirements[/b][/size]
+[list]
+[*][url=https://skse.silverlock.org/]SKSE64[/url] and [url=https://www.nexusmods.com/skyrimspecialedition/mods/32444]Address Library for SKSE Plugins[/url]
+[*][url=https://www.nexusmods.com/skyrimspecialedition/mods/126330]CHIM[/url] - game plugin and server (tested with 3.4.2)
+[*][url=https://www.nexusmods.com/skyrimspecialedition/mods/81635]ORomance Plus[/url] with its own requirements
+[*][url=https://www.nexusmods.com/skyrimspecialedition/mods/98163]OStim Standalone[/url] (tested with 7.5.1)
+[*][url=https://www.nexusmods.com/skyrimspecialedition/mods/13048]PapyrusUtil SE/AE[/url]
+[*][url=https://www.nexusmods.com/skyrimspecialedition/mods/12604]SkyUI[/url] and [url=https://www.nexusmods.com/skyrimspecialedition/mods/53000]MCM Helper[/url]
+[/list]
+[b]Optional:[/b]
+[list]
+[*][b]CHIM OStim Bridge[/b] - my other mod, recommended: spouses start the intimate scenes they ask for. [url=https://www.nexusmods.com/skyrimspecialedition/mods/194761]Nexus[/url] · [url=https://github.com/SimpleL97/CHIM-OStim-Bridge]GitHub[/url]
+[*][url=https://www.nexusmods.com/skyrimspecialedition/mods/13068]Fertility Mode 3[/url] with [url=https://www.nexusmods.com/skyrimspecialedition/mods/46820]Fertility Mode 3 Fixes and Updates[/url] - cycle and pregnancy awareness
+[/list]
+
+[size=4][b]Installation[/b][/size]
+[list=1]
+[*]Install with Vortex or Mod Organizer 2 and enable [b]CHIMORomanceBridge.esp[/b] (ESL flagged - no load order slot; load order does not matter).
+[*]Start the CHIM server as usual, then the game. CHIM finds the bundled server plugin in [i]Data/CHIM/server-plugins[/i] and installs it on its server by itself; the six actions are added to CHIM's action list on the first request.
+[*]Load a save. The MCM "CHIM ORomance Bridge" appears after a few seconds.
+[/list]
+If your CHIM version does not install bundled server plugins, choose "Manual server install tools" in the installer and run [i]Install-ServerPlugin.bat[/i] once.
+
+[b]Updating:[/b] install the new version over the old one; CHIM updates the server side on the next game start.
+[b]Uninstalling:[/b] run [i]Uninstall-ServerPlugin.bat[/i] (manual tools option) to remove the server plugin and its actions, then remove the mod.
+
+[size=4][b]Compatibility[/b][/size]
+[list]
+[*]Uses its own plugin, scripts (COR_*) and CHIM action codes (ExtCmdCOR_*).
+[*]Made to work together with [url=https://www.nexusmods.com/skyrimspecialedition/mods/194761]CHIM OStim Bridge[/url]: a spouse already listed there for hunger for sex uses that instead of the marital duty here, so nothing is asked twice.
+[*]Reads ORomance Plus's data and calls its own functions; changes nothing in ORomance itself.
+[*]Safe to add to an existing save.
+[/list]
+
+[size=4][b]FAQ[/b][/size]
+[b]No proposal line in the dialogue.[/b] Wear the Amulet of Mara; the NPC must be at least your friend and not married to you yet.
+[b]"Not ready yet".[/b] With "Use ORomance's odds" on, ORomance decides - raise love, or switch the odds off in the MCM.
+[b]Names in the MCM?[/b] Exactly as shown in game, separated by commas: "Name One, Name Two" (marital duty: "Name One=24, Name Two=72").
+
+[size=4][b]Source code[/b][/size]
+The mod is open source (MIT license). The complete source code is on GitHub: [url=https://github.com/SimpleL97/CHIM-ORomance-Bridge]github.com/SimpleL97/CHIM-ORomance-Bridge[/url]
+[list]
+[*][url=https://github.com/SimpleL97/CHIM-ORomance-Bridge/blob/main/BUILDING.md]BUILDING.md[/url] - how to build this exact release from the sources, step by step, and where every file in the archive comes from
+[*][url=https://github.com/SimpleL97/CHIM-ORomance-Bridge/blob/main/DEPENDENCIES.md]DEPENDENCIES.md[/url] - every requirement and what it is used for
+[/list]
+Bug reports and suggestions are welcome here in the Posts tab or as GitHub issues.
+
+[size=4][b]Credits[/b][/size]
+Dwemer Dynamics for CHIM, the authors of ORomance and ORomance Plus, the OStim team for OStim Standalone, Narue for Fertility Mode and Subhuman0100 for its Fixes and Updates, exiledviper and meh321 for PapyrusUtil, the SkyUI team, Exit-9B for MCM Helper.

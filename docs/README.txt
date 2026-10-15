@@ -16,9 +16,14 @@ REQUIREMENTS
 - OStim Standalone (Nexus 98163, tested with 7.5.1)
 - PapyrusUtil SE/AE (Nexus 13048)
 - SkyUI (Nexus 12604) and MCM Helper (Nexus 53000)
-Recommended: CHIM OStim Bridge (Nexus 194761) - spouses start the scenes they ask for.
-Optional: Fertility Mode 3 (Nexus 13068) with Fertility Mode 3 Fixes and Updates
-(Nexus 46820) - cycle and pregnancy awareness, pregnancies from OStim scenes.
+
+OPTIONAL
+- CHIM OStim Bridge (recommended, my other mod) - spouses start the intimate scenes
+  they ask for. Not required.
+    Nexus:  https://www.nexusmods.com/skyrimspecialedition/mods/194761
+    GitHub: https://github.com/SimpleL97/CHIM-OStim-Bridge
+- Fertility Mode 3 (Nexus 13068) with Fertility Mode 3 Fixes and Updates
+  (Nexus 46820) - cycle and pregnancy awareness, pregnancies from OStim scenes.
 
 
 INSTALLATION

@@ -17,9 +17,11 @@ None of these are bundled: the release ships only this mod's own files.
 | **SkyUI** | [Nexus 12604](https://www.nexusmods.com/skyrimspecialedition/mods/12604) | MCM framework: `SKI_ConfigBase`, `SKI_PlayerLoadGameAlias`, and the `Interface/Translations` loader for the 12 menu languages. |
 | **MCM Helper** | [Nexus 53000](https://www.nexusmods.com/skyrimspecialedition/mods/53000) | Builds the MCM from `MCM/Config/CHIMORomanceBridge/config.json` and stores the settings (`MCM.GetModSettingBool/Int/String`); `COR_MCM` extends `MCM_ConfigBase`. |
 
-Recommended:
+Optional, recommended:
 
-- [CHIM OStim Bridge](https://www.nexusmods.com/skyrimspecialedition/mods/194761) - starts
+- **CHIM OStim Bridge** - my other mod, made the same way
+  ([Nexus 194761](https://www.nexusmods.com/skyrimspecialedition/mods/194761),
+  [GitHub](https://github.com/SimpleL97/CHIM-OStim-Bridge)). Not required. It starts
   the OStim scenes (spouses asking for the marital duty start the scene with its
   `Start_Intimate_Scene` action). The server plugin only mentions that action when CHIM
   OStim Bridge's server plugin is loaded, and skips its own marital-duty line for a

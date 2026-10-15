@@ -1,0 +1,47 @@
+CHIM ORomance Bridge - values for the Nexus Mods upload form
+=============================================================
+
+MOD PAGE
+  Name:            CHIM ORomance Bridge
+  Author:          SaurOff
+  Version:         1.0.0
+  Category:        Gameplay   (Skyrim SE has no separate adult category; adult content is a flag)
+  Adult content:   YES (sexual content)
+  Language:        English
+  Brief overview (max 350 characters):
+    CHIM AI NPCs fall in love from what you say and do, become your partner and marry you through ORomance Plus - several spouses. Spouses talk to each other, share household duties, ask for the marital duty and can want children (Fertility Mode aware). MCM in 12 languages; the server side installs itself.
+  Description:     paste NEXUS_DESCRIPTION.bbcode.txt (BBCode editor)
+  Main image:      CHIM ORomance Bridge - banner.png (art/banner.png)
+
+REQUIREMENTS (Nexus "Requirements" tab, Nexus mods)
+  CHIM                              126330   game plugin and server
+  ORomance Plus                     81635    with its own requirements
+  OStim Standalone                  98163
+  PapyrusUtil SE/AE                 13048
+  SkyUI                             12604
+  MCM Helper                        53000
+  Address Library for SKSE Plugins  32444
+  CHIM OStim Bridge                 194761   note: "Optional, recommended - my other mod: spouses start the scenes they ask for"
+  Fertility Mode 3                  13068    note: "Optional - cycle and pregnancy awareness (with Fixes and Updates)"
+  Fertility Mode 3 Fixes and Updates 46820   note: "Optional - needed for the Fertility Mode support"
+Off-site requirement
+  SKSE64                            https://skse.silverlock.org/
+
+Also on CHIM OStim Bridge's page (194761), "Mods requiring this file" fills itself once this
+mod lists it; optionally add a line to its description linking here.
+
+FILE UPLOAD
+  File:            CHIM ORomance Bridge.zip   (older versions: archive/CHIM ORomance Bridge-<version>.zip)
+  File name:       CHIM ORomance Bridge
+  Version:         1.0.0   (must match fomod/info.xml; Vortex shows and tracks versions from this)
+  Category:        Main Files
+  Description:     First release. FOMOD installer; the CHIM server plugin installs itself at game start.
+
+PERMISSIONS (suggested, as for CHIM OStim Bridge)
+  Upload to other sites:   ask first
+  Modify and re-release:   ask first
+  Use assets in your mods: credit SaurOff
+  Convert to other games:  no
+  Donation points:         your choice
+
+TAGS (suggested): AI, CHIM, ORomance, OStim, Marriage, Followers, Immersion, MCM, Adult, Pregnancy, Dialogue

@@ -1,4 +1,4 @@
-![CHIM ORomance Bridge](art/banner.png)
+![CHIM ORomance Bridge](art/banner.png?v=2)
 
 # CHIM ORomance Bridge
 
@@ -9,8 +9,10 @@ marry you when they want to (several spouses), and spouses live as spouses: they
 each other, share the household, ask for the marital duty and - if you like - want
 children, knowing where they are in their cycle with Fertility Mode.
 
-It is the companion of [CHIM OStim Bridge](https://github.com/SimpleL97/CHIM-OStim-Bridge),
-built the same way, and works together with it.
+It is the companion of my other mod **CHIM OStim Bridge**
+([Nexus](https://www.nexusmods.com/skyrimspecialedition/mods/194761) ·
+[GitHub](https://github.com/SimpleL97/CHIM-OStim-Bridge)), built the same way. It is an
+optional but recommended dependency: with it, spouses start the intimate scenes they ask for.
 
 > **Adult content.** This mod deals with sexual content in a video game and is meant
 > for adults only.
@@ -112,9 +114,15 @@ python3 -I verify_release.py "release/CHIM ORomance Bridge.zip"
 ## Installing (players)
 
 Requirements: SKSE64, Address Library, CHIM (plugin and server), ORomance Plus,
-OStim Standalone, PapyrusUtil, SkyUI, MCM Helper; recommended CHIM OStim Bridge; optional
-Fertility Mode 3 + Fixes and Updates - see [DEPENDENCIES.md](DEPENDENCIES.md). Install the
-release archive with Vortex or MO2, start the CHIM server, then the game.
+OStim Standalone, PapyrusUtil, SkyUI, MCM Helper - see [DEPENDENCIES.md](DEPENDENCIES.md).
+
+Optional:
+- **CHIM OStim Bridge** (recommended, my other mod:
+  [Nexus](https://www.nexusmods.com/skyrimspecialedition/mods/194761) ·
+  [GitHub](https://github.com/SimpleL97/CHIM-OStim-Bridge)) - spouses start the scenes they ask for
+- Fertility Mode 3 + Fertility Mode 3 Fixes and Updates - cycle and pregnancy awareness
+
+Install the release archive with Vortex or MO2, start the CHIM server, then the game.
 More in [docs/README.txt](docs/README.txt).
 
 ## License
