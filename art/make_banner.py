@@ -124,13 +124,13 @@ def ring(cx, cy, r, tilt, opacity=1.0):
 
 
 # glow behind the rings, then two interlocked wedding rings with a small diamond
-add('<circle cx="1660" cy="800" r="230" fill="#ffcf7a" opacity="0.35" filter="url(#soft)"/>')
-ring(1590, 820, 120, -18)
-ring(1735, 790, 120, 14)
-add('<path d="M1590,690 l22,-26 l22,26 l-22,30 Z" fill="#e8fbff" stroke="#ffffff" stroke-width="2" opacity="0.95"/>')
-add('<path d="M1590,690 l22,-26 l22,26 Z" fill="#bfe9ff" opacity="0.8"/>')
+add('<circle cx="1660" cy="845" r="230" fill="#ffcf7a" opacity="0.35" filter="url(#soft)"/>')
+ring(1590, 865, 120, -18)
+ring(1735, 835, 120, 14)
+add('<path d="M1590,735 l22,-26 l22,26 l-22,30 Z" fill="#e8fbff" stroke="#ffffff" stroke-width="2" opacity="0.95"/>')
+add('<path d="M1590,735 l22,-26 l22,26 Z" fill="#bfe9ff" opacity="0.8"/>')
 # redraw the front part of the first ring over the second: the rings interlock
-add('<g transform="translate(1590,820) rotate(-18)"><path d="M120,0 A120,110 0 0 1 60,95" fill="none" stroke="url(#gold)" stroke-width="24"/></g>')
+add('<g transform="translate(1590,865) rotate(-18)"><path d="M120,0 A120,110 0 0 1 60,95" fill="none" stroke="url(#gold)" stroke-width="24"/></g>')
 for (x, y, s, o) in [(1440, 230, 0.55, 0.45), (1800, 330, 0.6, 0.5), (1420, 960, 0.5, 0.45)]:
     add(f'<use href="#heart" transform="translate({x},{y}) scale({s})" fill="#ff7a9c" stroke="#ffe2b0" stroke-width="{3 / s:.2f}" opacity="{o}"/>')
 for _ in range(45):  # sparkles
@@ -146,9 +146,12 @@ add(f'<line x1="{C - H - 20}" y1="{H + 20}" x2="{C + 20}" y2="-20" stroke="url(#
 
 # ---------------- title
 add('<g font-family="Georgia, Palatino Linotype, serif" text-anchor="middle" filter="url(#shadow)">')
-add(f'<rect x="{W / 2 - 640}" y="{H / 2 - 150}" width="1280" height="300" rx="28" fill="#000" opacity="0.38"/>')
-add(f'<text x="{W / 2 - 250}" y="{H / 2 + 10}" text-anchor="end" font-size="130" font-weight="bold" letter-spacing="10" fill="#7fdcff">CHIM</text>')
-add(f'<text x="{W / 2 - 190}" y="{H / 2 + 10}" text-anchor="start" font-size="130" font-weight="bold" letter-spacing="4" fill="url(#goldText)">ORomance</text>')
+BOX = 1400  # title plate, centred
+add(f'<rect x="{(W - BOX) / 2:.0f}" y="{H / 2 - 150}" width="{BOX}" height="300" rx="28" fill="#000" opacity="0.38"/>')
+# one line, centred as a whole: the two words keep their own colours as tspans
+add(f'<text x="{W / 2}" y="{H / 2 + 10}" text-anchor="middle" font-size="120" font-weight="bold">'
+    f'<tspan letter-spacing="8" fill="#7fdcff">CHIM</tspan>'
+    f'<tspan dx="40" letter-spacing="3" fill="url(#goldText)">ORomance</tspan></text>')
 add(f'<text x="{W / 2}" y="{H / 2 + 100}" font-size="64" letter-spacing="34" fill="url(#titleGrad)">BRIDGE</text>')
 add(f'<text x="{W / 2}" y="{H - 48}" font-size="34" letter-spacing="6" fill="#ffffff" opacity="0.85">by SaurOff</text>')
 add('</g>')
