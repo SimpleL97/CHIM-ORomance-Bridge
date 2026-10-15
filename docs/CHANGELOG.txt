@@ -1,0 +1,13 @@
+CHIM ORomance Bridge - changelog
+================================
+
+1.0.0
+- First release.
+- AI actions through ORomance Plus: Feel_Affection, Feel_Hurt, Become_Partner,
+  Marry_Player (several spouses), Take_Household_Duty, Give_Homemade_Meal.
+- The Amulet of Mara proposal line back in the normal dialogue menu.
+- Agents know their ORomance feelings; spouses know their marriage and each other,
+  talk to each other, share household duties and ask for the marital duty.
+- Wanting children (MCM names); optional Fertility Mode 3 support: cycle and
+  pregnancy awareness, pregnancies from OStim Standalone scenes.
+- MCM through MCM Helper in 12 languages; the server plugin installs itself.

@@ -1,0 +1,152 @@
+# Building CHIM ORomance Bridge
+
+This repository holds everything the release is made from. Every file in the release
+archive is either a source file from here, copied as is, or is generated from the
+sources by the scripts below. Nothing is edited by hand after the build.
+
+## 1. What you need
+
+- **Python 3.8+** - standard library only. On Windows use `py -3` or `python` instead of
+  `python3` below; WSL works too.
+- **Windows PowerShell 5.1+** (built into Windows) - for the Papyrus compile step.
+- **Papyrus compiler** - `PapyrusCompiler.exe` and `TESV_Papyrus_Flags.flg`, from the free
+  **Creation Kit** on Steam (`<Skyrim>\Papyrus Compiler\`; the base game sources come as
+  `Data\Scripts.zip`, extract it into `Data`). The release was compiled with the same
+  Bethesda compiler as bundled in *Nemesis Unlimited Behavior Engine*.
+- **The mods this one calls into, installed in the game** - SKSE64, OStim Standalone,
+  PapyrusUtil and CHIM install their `.psc` sources into `Data\Scripts\Source` or
+  `Data\Source\Scripts`; the compiler reads them from there. SkyUI, MCM Helper and
+  ORomance Plus sources are not needed (see `stubs/`).
+
+Exactly what each dependency is used for: [DEPENDENCIES.md](DEPENDENCIES.md).
+
+## 2. Build, step by step
+
+Run everything from the repository root.
+
+### Step 1 - the MCM menu and its translations (only after changing the menu)
+
+```
+python3 -I localize.py
+```
+
+Writes `mcm/config.json` (the MCM Helper menu, from the `MENU` layout in `localize.py`,
+every text a `$COR_...` key) and `mcm/translations/CHIMORomanceBridge_<LANGUAGE>.txt`
+from the string table `T` (53 strings x 12 languages; UTF-16 LE with BOM, `$key<TAB>text`,
+CRLF - the format SkyUI requires; 25 more game languages get a copy of English, because
+SkyUI has no fallback). The outputs are committed; running it again changes nothing.
+
+### Step 2 - the game plugin
+
+```
+python3 -I make_esp.py
+```
+
+Writes `build/CHIMORomanceBridge.esp` and `build/SEQ/CHIMORomanceBridge.seq`, byte by
+byte and the same on every run. ESL flagged, master `Skyrim.esm` only, author SaurOff.
+
+| FormID | Record | Purpose |
+|---|---|---|
+| `xx000800` | QUST `COR_BridgeQuest` + script `COR_Bridge` | the AI's actions |
+| `xx000801` | QUST `COR_EventsQuest` + script `COR_Events` | state for the server, spouse conversations, marital duty, Fertility Mode |
+| `xx000802` | QUST `COR_MCMQuest` + `COR_MCM`, player alias with `SKI_PlayerLoadGameAlias` | MCM menu |
+| `xx000803` | QUST `COR_DialogueQuest` | holds the proposal dialogue (listed in the `.seq` file) |
+| `xx000804` | DLBR `COR_ProposeBranch` | top-level player branch |
+| `xx000805` | DIAL `COR_Propose` | "(Amulet of Mara) Will you marry me?" |
+| `xx000806` | INFO in `xx000805` | the reply; end fragment `COR_TIF_Propose` |
+
+The dialogue copies the record layout and conditions of `Skyrim.esm`'s own courting line
+(INFO `000CD86F`): the player wears the Amulet of Mara, the NPC is at least a friend; plus
+"not married to the player yet".
+
+### Step 3 - compile the Papyrus scripts
+
+```
+powershell -ExecutionPolicy Bypass -File compile_scripts.ps1 -Compiler "<folder with PapyrusCompiler.exe>" -GameData "<Skyrim>\Data"
+```
+
+Compiles `COR`, `COR_Config`, `COR_Romance`, `COR_Bridge`, `COR_Events`, `COR_MCM` and
+`COR_TIF_Propose` into `build/Scripts/*.pex`. Import order: `src/Scripts/Source`,
+`stubs/oromance`, the game's `Data\Scripts\Source` and `Data\Source\Scripts`, any
+`-Imports`, then `stubs` and `stubs/vanilla`. The compiler takes the first file it finds
+for each type. Options: `-Flags <path to .flg>`, `-Out <folder>`.
+
+Bethesda's compiler writes the compile time and an unordered string table into each
+`.pex`, so two compiles never match byte for byte; the size and the code are the same.
+
+### Step 4 - package
+
+```
+python3 -I build.py [release folder]
+```
+
+Checks that the version is the same in all four places (see *Versioning*), builds the
+CHIM server plugin package `build/cor_oromance_bridge-<version>.dwpkg`, lays out the FOMOD
+tree in `build/stage/` and zips it to `<release folder>/CHIM ORomance Bridge.zip` (default
+`release/`). An older version found there is moved to `archive/CHIM ORomance Bridge-<old
+version>.zip` first.
+
+### Step 5 - check the archive
+
+```
+python3 -I verify_release.py "release/CHIM ORomance Bridge.zip" [<HerikaServer/ext/cor_oromance_bridge>] [<Data>]
+```
+
+Compares every file in the zip with its source or build output, checks that each `.pex` is
+newer than its `.psc` and that every translation file has every menu key; optionally also
+against a live CHIM server plugin folder and an installed game `Data` folder.
+
+## 3. Where every file in the release comes from
+
+| In the release zip | Source in this repository | Made by |
+|---|---|---|
+| `fomod/info.xml`, `fomod/ModuleConfig.xml` | `fomod/` | copied |
+| `README.txt`, `CHANGELOG.txt` | `docs/` | copied |
+| `00 Core/CHIMORomanceBridge.esp`, `00 Core/SEQ/CHIMORomanceBridge.seq` | `make_esp.py` | step 2 |
+| `00 Core/Scripts/COR*.pex` | `src/Scripts/Source/COR*.psc` | step 3 |
+| `00 Core/MCM/Config/CHIMORomanceBridge/config.json`, `settings.ini` | `mcm/` | copied (config.json from step 1) |
+| `00 Core/Interface/Translations/CHIMORomanceBridge_*.txt` | `mcm/translations/` | copied (from step 1) |
+| `00 Core/CHIM/server-plugins/cor_oromance_bridge/<version>.dwpkg` | `server/cor_oromance_bridge/*` | step 4 |
+| `10 Server Tools/CHIM ORomance Bridge Server Tools/*.bat, *.ps1` | `server/*.bat`, `server/*.ps1` | copied |
+| `10 Server Tools/CHIM ORomance Bridge Server Tools/cor_oromance_bridge/*` | `server/cor_oromance_bridge/*` | copied |
+| `20 Source/Source/Scripts/COR*.psc` | `src/Scripts/Source/` | copied |
+
+FOMOD options: `00 Core` is always installed; `10 Server Tools` (manual install of the
+server plugin, for CHIM versions that do not install bundled server plugins) and
+`20 Source` (the `.psc` files) are optional.
+
+### The `.dwpkg` server package
+
+A plain zip in the format CHIM's `ServerPluginSync` / `DwemerPluginPackageManager` reads:
+`manifest.json` (`schema_version` 4, name `cor_oromance_bridge`, version, author,
+`server.mutable_paths`), `checksums.sha256` (sha256 of every other file) and
+`server/cor_lib.php, context_pre.php, functions.php, manifest.json, preprocessing.php,
+prompts.php` - the same files as in `server/cor_oromance_bridge/`. CHIM uploads it from
+`Data/CHIM/server-plugins/cor_oromance_bridge/<version>.dwpkg` at game start and unpacks
+`server/` to `HerikaServer/ext/cor_oromance_bridge/`, only when the version changes.
+
+### The `.bat` / `.ps1` server tools
+
+`Install-ServerPlugin.bat` starts `Install-ServerPlugin.ps1`, which finds the WSL distro
+running the CHIM server (normally `DwemerAI4Skyrim3`) and copies the `cor_oromance_bridge`
+folder next to it into `/var/www/html/HerikaServer/ext/`. `Uninstall-ServerPlugin.*`
+removes that folder and the mod's six actions and stored settings and state from CHIM's
+database (`core_action_custom` rows `ExtCmdCOR_*`, `conf_opts` rows
+`cor_oromance_bridge*`). Nothing else; read them in `server/`.
+
+## 4. Versioning
+
+The version must be the same in four places - `build.py` stops if they differ:
+`server/cor_oromance_bridge/cor_lib.php` (`COR_VERSION`), `server/cor_oromance_bridge/manifest.json`,
+`fomod/info.xml` (`MachineVersion` and the text) and `src/Scripts/Source/COR_Config.psc`
+(`Version()`). Also update `docs/CHANGELOG.txt`, the version line in `docs/README.txt` and
+`VERSION` in `localize.py` (the menu title). Every published change needs a new version:
+CHIM only re-installs the server package when the version changes.
+
+## 5. Quick test in game
+
+1. Install the release zip with Vortex or MO2.
+2. Start the CHIM server, then the game, and load a save.
+3. `SKSE/AIAgent.log` should contain `[SERVER_PLUGIN_SYNC] Installed cor_oromance_bridge`.
+4. The MCM *CHIM ORomance Bridge* appears; turn on *Show notifications*, compliment an AI
+   follower - the Feel_Affection result shows in the top left corner.

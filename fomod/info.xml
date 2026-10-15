@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fomod>
+  <Name>CHIM ORomance Bridge</Name>
+  <Author>SaurOff</Author>
+  <Version MachineVersion="1.0.0">1.0.0</Version>
+  <Description>Connects CHIM AI agents with ORomance Plus: what you say and do in conversation counts as ORomance affection and love, agents become your partner and marry you (several spouses) when they want to, and the Amulet of Mara proposal line is back in the normal dialogue menu. Spouses know they are married, talk to each other, share household duties and ask for the marital duty in their own manner; those who want children say so, and with Fertility Mode they know where they are in their cycle. Works together with CHIM OStim Bridge. Configured in the MCM.</Description>
+  <Groups>
+    <element>Gameplay</element>
+    <element>Immersion</element>
+  </Groups>
+</fomod>

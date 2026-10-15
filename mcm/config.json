@@ -1,0 +1,281 @@
+{
+    "modName": "CHIMORomanceBridge",
+    "displayName": "CHIM ORomance Bridge",
+    "minMcmVersion": 9,
+    "cursorFillMode": "topToBottom",
+    "pages": [
+        {
+            "pageDisplayName": "$COR_pGeneral",
+            "cursorFillMode": "topToBottom",
+            "content": [
+                {
+                    "text": "CHIM ORomance Bridge 1.0.0 by SaurOff",
+                    "type": "header"
+                },
+                {
+                    "id": "bEnabled:General",
+                    "text": "$COR_Enabled",
+                    "type": "toggle",
+                    "help": "$COR_EnabledH",
+                    "valueOptions": {
+                        "sourceType": "ModSettingBool"
+                    }
+                },
+                {
+                    "id": "bOdds:General",
+                    "text": "$COR_Odds",
+                    "type": "toggle",
+                    "help": "$COR_OddsH",
+                    "valueOptions": {
+                        "sourceType": "ModSettingBool"
+                    }
+                },
+                {
+                    "text": "$COR_hDebug",
+                    "type": "header"
+                },
+                {
+                    "id": "bNotify:Debug",
+                    "text": "$COR_Notify",
+                    "type": "toggle",
+                    "help": "$COR_NotifyH",
+                    "valueOptions": {
+                        "sourceType": "ModSettingBool"
+                    }
+                }
+            ]
+        },
+        {
+            "pageDisplayName": "$COR_pLove",
+            "cursorFillMode": "topToBottom",
+            "content": [
+                {
+                    "text": "$COR_hFeelings",
+                    "type": "header"
+                },
+                {
+                    "id": "bAffection:Love",
+                    "text": "$COR_Affection",
+                    "type": "toggle",
+                    "help": "$COR_AffectionH",
+                    "valueOptions": {
+                        "sourceType": "ModSettingBool"
+                    }
+                },
+                {
+                    "id": "iLikeGain:Love",
+                    "text": "$COR_LikeGain",
+                    "type": "slider",
+                    "help": "$COR_LikeGainH",
+                    "valueOptions": {
+                        "min": 1,
+                        "max": 10,
+                        "step": 1,
+                        "formatString": "{0}",
+                        "sourceType": "ModSettingInt"
+                    }
+                },
+                {
+                    "id": "iLoveGain:Love",
+                    "text": "$COR_LoveGain",
+                    "type": "slider",
+                    "help": "$COR_LoveGainH",
+                    "valueOptions": {
+                        "min": 0,
+                        "max": 5,
+                        "step": 1,
+                        "formatString": "{0}",
+                        "sourceType": "ModSettingInt"
+                    }
+                },
+                {
+                    "id": "iDislikeGain:Love",
+                    "text": "$COR_DislikeGain",
+                    "type": "slider",
+                    "help": "$COR_DislikeGainH",
+                    "valueOptions": {
+                        "min": 1,
+                        "max": 10,
+                        "step": 1,
+                        "formatString": "{0}",
+                        "sourceType": "ModSettingInt"
+                    }
+                },
+                {
+                    "id": "iDailyLike:Love",
+                    "text": "$COR_DailyLike",
+                    "type": "slider",
+                    "help": "$COR_DailyLikeH",
+                    "valueOptions": {
+                        "min": 0,
+                        "max": 30,
+                        "step": 1,
+                        "formatString": "{0}",
+                        "sourceType": "ModSettingInt"
+                    }
+                },
+                {
+                    "id": "bFeelings:Love",
+                    "text": "$COR_Feelings",
+                    "type": "toggle",
+                    "help": "$COR_FeelingsH",
+                    "valueOptions": {
+                        "sourceType": "ModSettingBool"
+                    }
+                }
+            ]
+        },
+        {
+            "pageDisplayName": "$COR_pSpouses",
+            "cursorFillMode": "topToBottom",
+            "content": [
+                {
+                    "text": "$COR_hSpouseLife",
+                    "type": "header"
+                },
+                {
+                    "id": "bSpouseLife:Spouses",
+                    "text": "$COR_SpouseLife",
+                    "type": "toggle",
+                    "help": "$COR_SpouseLifeH",
+                    "valueOptions": {
+                        "sourceType": "ModSettingBool"
+                    }
+                },
+                {
+                    "id": "bDuties:Spouses",
+                    "text": "$COR_Duties",
+                    "type": "toggle",
+                    "help": "$COR_DutiesH",
+                    "valueOptions": {
+                        "sourceType": "ModSettingBool"
+                    }
+                },
+                {
+                    "text": "$COR_hWives",
+                    "type": "header"
+                },
+                {
+                    "id": "bWivesTalk:Spouses",
+                    "text": "$COR_WivesTalk",
+                    "type": "toggle",
+                    "help": "$COR_WivesTalkH",
+                    "valueOptions": {
+                        "sourceType": "ModSettingBool"
+                    }
+                },
+                {
+                    "id": "iWivesMinutes:Spouses",
+                    "text": "$COR_WivesMinutes",
+                    "type": "slider",
+                    "help": "$COR_WivesMinutesH",
+                    "valueOptions": {
+                        "min": 5,
+                        "max": 120,
+                        "step": 5,
+                        "formatString": "{0} min",
+                        "sourceType": "ModSettingInt"
+                    }
+                },
+                {
+                    "id": "iWivesChance:Spouses",
+                    "text": "$COR_WivesChance",
+                    "type": "slider",
+                    "help": "$COR_WivesChanceH",
+                    "valueOptions": {
+                        "min": 0,
+                        "max": 100,
+                        "step": 5,
+                        "formatString": "{0}%",
+                        "sourceType": "ModSettingInt"
+                    }
+                },
+                {
+                    "text": "$COR_hDuty",
+                    "type": "header"
+                },
+                {
+                    "id": "bDuty:Spouses",
+                    "text": "$COR_Duty",
+                    "type": "toggle",
+                    "help": "$COR_DutyH",
+                    "valueOptions": {
+                        "sourceType": "ModSettingBool"
+                    }
+                },
+                {
+                    "id": "iDutyHours:Spouses",
+                    "text": "$COR_DutyHours",
+                    "type": "slider",
+                    "help": "$COR_DutyHoursH",
+                    "valueOptions": {
+                        "min": 6,
+                        "max": 168,
+                        "step": 6,
+                        "formatString": "{0} h",
+                        "sourceType": "ModSettingInt"
+                    }
+                },
+                {
+                    "id": "sDutyHours:Spouses",
+                    "text": "$COR_DutyNames",
+                    "type": "input",
+                    "help": "$COR_DutyNamesH",
+                    "valueOptions": {
+                        "sourceType": "ModSettingString"
+                    }
+                }
+            ]
+        },
+        {
+            "pageDisplayName": "$COR_pChildren",
+            "cursorFillMode": "topToBottom",
+            "content": [
+                {
+                    "text": "$COR_hChildren",
+                    "type": "header"
+                },
+                {
+                    "id": "bChildren:Children",
+                    "text": "$COR_Children",
+                    "type": "toggle",
+                    "help": "$COR_ChildrenH",
+                    "valueOptions": {
+                        "sourceType": "ModSettingBool"
+                    }
+                },
+                {
+                    "id": "sWantChildren:Children",
+                    "text": "$COR_WantChildren",
+                    "type": "input",
+                    "help": "$COR_WantChildrenH",
+                    "valueOptions": {
+                        "sourceType": "ModSettingString"
+                    }
+                },
+                {
+                    "text": "$COR_hFertility",
+                    "type": "header"
+                },
+                {
+                    "id": "bFertility:Children",
+                    "text": "$COR_Fertility",
+                    "type": "toggle",
+                    "help": "$COR_FertilityH",
+                    "valueOptions": {
+                        "sourceType": "ModSettingBool"
+                    }
+                },
+                {
+                    "id": "bInseminate:Children",
+                    "text": "$COR_Inseminate",
+                    "type": "toggle",
+                    "help": "$COR_InseminateH",
+                    "valueOptions": {
+                        "sourceType": "ModSettingBool"
+                    }
+                }
+            ]
+        }
+    ]
+}
