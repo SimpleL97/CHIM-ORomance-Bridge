@@ -96,6 +96,12 @@ Function SendPeople()
 		fertility = COR_Config.FertilityFaction()
 	EndIf
 	float now = Utility.GetCurrentGameTime()
+	; ORomance's odds (MCM): would it accept a couple / a marriage right now? So the agent
+	; knows beforehand instead of saying yes and then being turned down by ORomance
+	ORomanceScript main = None
+	If COR_Config.B("bOdds:General")
+		main = COR_Romance.Main()
+	EndIf
 	string j = ""
 	int i = 0
 	While i < around.Length
@@ -121,6 +127,10 @@ Function SendPeople()
 				j += "\"" + name + "\":{\"g\":" + a.GetActorBase().GetSex()
 				j += ",\"s\":" + COR_Config.Bit(spouse) + ",\"pt\":" + COR_Config.Bit(partner)
 				j += ",\"li\":" + (like as int) + ",\"lo\":" + (love as int) + ",\"di\":" + (dislike as int)
+				If main && seeded && !spouse
+					j += ",\"ao\":" + COR_Config.Bit(partner || main.TryAskOut(a))
+					j += ",\"mo\":" + COR_Config.Bit(main.TryPropose(a))
+				EndIf
 				If fertility && a.IsInFaction(fertility)
 					int fm = a.GetFactionRank(fertility)
 					j += ",\"fm\":" + fm

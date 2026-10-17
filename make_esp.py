@@ -85,7 +85,7 @@ def ctda(op_flags, value, func, p1=0, p2=0, run_on=0):
 
 EQ, GE = 0x00, 0x60
 GetEquipped, GetInFaction, GetRelationshipRank = 182, 71, 403
-AmuletOfMara, PlayerMarriedFaction = 0x0C891B, 0x0C6472
+AmuletOfMara, PlayerMarriedFaction, MarriageCourtingFaction = 0x0C891B, 0x0C6472, 0x07431A
 
 # start game enabled, run once off; priority 0 for the plain quests, 50 for the dialogue
 DNAM = struct.pack('<HBBII', 0x0111, 0, 0xFF, 0, 0)
@@ -129,7 +129,8 @@ info = record(b'INFO', INFO,
               + sub(b'NAM1', zstr(REPLY)) + sub(b'NAM2', b'\x00') + sub(b'NAM3', b'\x00')
               + ctda(EQ, 1.0, GetEquipped, AmuletOfMara, run_on=1)         # on the player
               + ctda(GE, 1.0, GetRelationshipRank)                        # with the player: friend or more
-              + ctda(EQ, 0.0, GetInFaction, PlayerMarriedFaction))        # not married to the player yet
+              + ctda(EQ, 0.0, GetInFaction, PlayerMarriedFaction)         # not married to the player yet
+              + ctda(EQ, 0.0, GetInFaction, MarriageCourtingFaction))     # nor engaged, waiting for the wedding
 
 dlbr = record(b'DLBR', BRANCH,
               sub(b'EDID', zstr('COR_ProposeBranch')) + sub(b'QNAM', struct.pack('<I', DIALOGUE))

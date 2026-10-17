@@ -331,9 +331,20 @@ function corPromptFor(string $npc, float $now): string
         }
     } elseif ($partner) {
         $lines[] = "You and {$player} are a couple: you are " . corWords($pg, "her", "his") . " " . corWords($g, "girlfriend", "boyfriend") . ".";
-        $lines[] = "If {$player} proposes marriage and you want it, say yes and call Marry_Player in that same reply ({$player} has to wear an Amulet of Mara).";
+        if (isset($me["mo"]) && empty($me["mo"])) {
+            // ORomance's odds (MCM) would turn a proposal down right now
+            $lines[] = "You are not ready to marry {$player} yet: it is too soon, your love has to grow and you need more time together. If {$player} proposes, say so in your own way - gently or teasingly - and do NOT call Marry_Player.";
+        } else {
+            $lines[] = "If {$player} proposes marriage and you want it, say yes and call Marry_Player in that same reply ({$player} has to wear an Amulet of Mara).";
+        }
     } elseif ($me !== null) {
-        $lines[] = "If {$player} asks you to be together as a couple and you truly want it, call Become_Partner in that reply. If {$player} proposes marriage and you want it, call Marry_Player.";
+        if (isset($me["ao"]) && empty($me["ao"])) {
+            $lines[] = "You are not ready to be {$player}'s partner yet - you do not feel that close to " . corWords($pg, "her", "him") . " yet. If {$player} asks you to be a couple or proposes marriage, say not yet in your own way, and do NOT call Become_Partner or Marry_Player.";
+        } elseif (isset($me["mo"]) && empty($me["mo"])) {
+            $lines[] = "If {$player} asks you to be together as a couple and you truly want it, call Become_Partner in that reply. Marriage would be too soon: you are not even a couple yet - if {$player} proposes, say in your own way that you should be together first, and do NOT call Marry_Player.";
+        } else {
+            $lines[] = "If {$player} asks you to be together as a couple and you truly want it, call Become_Partner in that reply. If {$player} proposes marriage and you want it, call Marry_Player.";
+        }
     }
 
     if ($me !== null && !empty($cfg["feelings"])) {
