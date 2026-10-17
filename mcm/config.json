@@ -115,6 +115,40 @@
                     }
                 },
                 {
+                    "text": "$COR_hSex",
+                    "type": "header"
+                },
+                {
+                    "id": "iSexLike:Love",
+                    "text": "$COR_SexLike",
+                    "type": "slider",
+                    "help": "$COR_SexLikeH",
+                    "valueOptions": {
+                        "min": 0,
+                        "max": 10,
+                        "step": 1,
+                        "formatString": "{0}",
+                        "sourceType": "ModSettingInt"
+                    }
+                },
+                {
+                    "id": "iSexLove:Love",
+                    "text": "$COR_SexLove",
+                    "type": "slider",
+                    "help": "$COR_SexLoveH",
+                    "valueOptions": {
+                        "min": 0,
+                        "max": 5,
+                        "step": 1,
+                        "formatString": "{0}",
+                        "sourceType": "ModSettingInt"
+                    }
+                },
+                {
+                    "text": "$COR_hWords",
+                    "type": "header"
+                },
+                {
                     "id": "bFeelings:Love",
                     "text": "$COR_Feelings",
                     "type": "toggle",

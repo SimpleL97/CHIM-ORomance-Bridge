@@ -186,15 +186,23 @@ Event OnSceneEnd(string eventName, string json, float numArg, Form sender)
 		Return
 	EndIf
 	Faction married = COR_Config.PlayerMarriedFaction()
+	; sex counts in ORomance too - but not a scene tagged aggressive
+	string sceneId = OJSON.GetScene(json)
+	bool tender = COR_Config.B("bEnabled:General") && !(sceneId != "" && OMetadata.HasSceneTag(sceneId, "aggressive"))
 	string names = ""
 	int i = 0
 	While i < acts.Length
 		Actor a = acts[i]
-		If a && a != p && (a.IsInFaction(married) || StorageUtil.GetIntValue(a, "or_k_part", -1) == 1)
-			If names != ""
-				names += ","
+		If a && a != p && !a.IsChild()
+			If tender
+				COR_Romance.SexAffection(a)
 			EndIf
-			names += COR_Config.Clean(a.GetDisplayName())
+			If a.IsInFaction(married) || StorageUtil.GetIntValue(a, "or_k_part", -1) == 1
+				If names != ""
+					names += ","
+				EndIf
+				names += COR_Config.Clean(a.GetDisplayName())
+			EndIf
 		EndIf
 		i += 1
 	EndWhile

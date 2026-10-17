@@ -32,7 +32,7 @@ python3 -I localize.py
 
 Writes `mcm/config.json` (the MCM Helper menu, from the `MENU` layout in `localize.py`,
 every text a `$COR_...` key) and `mcm/translations/CHIMORomanceBridge_<LANGUAGE>.txt`
-from the string table `T` (53 strings x 12 languages; UTF-16 LE with BOM, `$key<TAB>text`,
+from the string table `T` (59 strings x 12 languages; UTF-16 LE with BOM, `$key<TAB>text`,
 CRLF - the format SkyUI requires; 25 more game languages get a copy of English, because
 SkyUI has no fallback). The outputs are committed; running it again changes nothing.
 

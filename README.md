@@ -36,6 +36,8 @@ release (FOMOD archive) from the Nexus Mods page instead of building it.
 - **ORomance's odds** for partners and marriage can be used or left out (MCM).
 - **The proposal line**: ORomance Plus hides the vanilla marriage dialogue; the mod puts
   "(Amulet of Mara) Will you marry me?" back into the normal dialogue menu.
+- **Love from sex**: every OStim scene with the player raises ORomance like and love,
+  up to ORomance's own ceilings (10 / partner 20 / spouse 30).
 - **Feelings in words**: each agent's ORomance like, love and dislike for the player go
   into their prompt.
 - **Married life**: spouses know their marriage and each other, start conversations with

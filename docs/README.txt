@@ -80,6 +80,11 @@ The proposal line: ORomance Plus hides the vanilla marriage dialogue. This mod p
 who is at least your friend and not married to you yet, while you wear the amulet.
 It marries the same way as Marry_Player.
 
+Love from sex: every OStim scene with you raises the ORomance like and love of
+everyone in it (MCM amounts; scenes tagged aggressive do not count), up to
+ORomance's own ceilings for love from sex - 10 for anyone, 20 for a partner, 30 for
+a spouse. ORomance itself adds a little more when your partner climaxes.
+
 Feelings: every agent's ORomance like, love and dislike for you are put into words in
 their prompt ("you are in love with...", "you are angry with..."), so what they say
 fits the game.

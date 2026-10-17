@@ -51,6 +51,39 @@ string Function AddAffection(Actor npc, string kind) Global
 	Return who + " feels warmer toward " + you + " (like " + Stat(main.getlikeStat(npc)) + ", love " + Stat(main.getloveStat(npc)) + ")"
 EndFunction
 
+; A scene with the player: like and love grow, the way ORomance's own scenes do, with
+; ORomance's own ceilings for love from sex (10 for anyone, 20 for a partner, 30 for a
+; spouse). ORomance adds its own +3 like / +1 love when the NPC climaxes in the player's
+; scene (through OStim's older events); this counts every scene, climax or not.
+Function SexAffection(Actor npc) Global
+	ORomanceScript main = Main()
+	If !main || !npc
+		Return
+	EndIf
+	main.SeedIfNeeded(npc)
+	int like = COR_Config.I("iSexLike:Love")
+	int love = COR_Config.I("iSexLove:Love")
+	If like > 0
+		main.increaselikestat(npc, like as float)
+	EndIf
+	If love > 0
+		float ceiling = 10.0
+		If IsSpouse(npc)
+			ceiling = 30.0
+		ElseIf main.isPlayerPartner(npc)
+			ceiling = 20.0
+		EndIf
+		float now = main.getloveStat(npc)
+		If now + love > ceiling
+			love = (ceiling - now) as int
+		EndIf
+		If love > 0
+			main.increaselovestat(npc, love as float)
+		EndIf
+	EndIf
+	COR_Config.Note(npc.GetDisplayName() + " after the scene: like " + Stat(main.getlikeStat(npc)) + ", love " + Stat(main.getloveStat(npc)))
+EndFunction
+
 string Function AddHurt(Actor npc, string kind) Global
 	ORomanceScript main = Main()
 	If !main

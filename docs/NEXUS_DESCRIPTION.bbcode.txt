@@ -24,6 +24,9 @@ With "Use ORomance's odds" on (default), becoming a couple and marrying also nee
 [b]The proposal line is back[/b]
 ORomance Plus hides the vanilla marriage dialogue. This mod puts [i]"(Amulet of Mara) Will you marry me?"[/i] back into the normal dialogue menu, for anyone who is at least your friend and not married to you yet.
 
+[b]Love from sex[/b]
+Every OStim scene with you raises the ORomance like and love of everyone in it (amounts in the MCM; scenes tagged aggressive do not count), up to ORomance's own ceilings for love from sex: 10 for anyone, 20 for your partner, 30 for your spouse.
+
 [b]Feelings in words[/b]
 Every agent's ORomance like, love and dislike for you go into their prompt ("you are in love with...", "you are angry with..."), so what they say fits the game.
 
