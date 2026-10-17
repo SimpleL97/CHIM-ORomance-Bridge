@@ -4,6 +4,12 @@ This repository holds everything the release is made from. Every file in the rel
 archive is either a source file from here, copied as is, or is generated from the
 sources by the scripts below. Nothing is edited by hand after the build.
 
+There are two ways to build:
+
+- **Without the game** (Linux, WSL, macOS, GitHub Actions): one command, see
+  [Build without the game](#build-without-the-game). Every GitHub release is built this way.
+- **On Windows with Bethesda's compiler** and the game's script sources: steps 1-5 below.
+
 ## 1. What you need
 
 - **Python 3.8+** - standard library only. On Windows use `py -3` or `python` instead of
@@ -95,6 +101,51 @@ python3 -I verify_release.py "release/CHIM ORomance Bridge.zip" [<HerikaServer/e
 Compares every file in the zip with its source or build output, checks that each `.pex` is
 newer than its `.psc` and that every translation file has every menu key; optionally also
 against a live CHIM server plugin folder and an installed game `Data` folder.
+
+## Build without the game
+
+```
+tools/build_linux.sh <papyrus-compiler binary> [release folder]
+```
+
+Needs Python 3.8+ and the open-source [papyrus-compiler](https://github.com/russo-2025/papyrus-compiler)
+(MIT). Its release 0.0.4 still stores string escapes such as `\"` literally, which breaks
+the scripts' JSON; use a build of commit `b9dc995` or later (the fix for its issue 19).
+Building it from source takes a few seconds with [V](https://github.com/vlang/v/releases/tag/0.5.1)
+0.5.1 - the same commands as in `.github/workflows/release.yml`:
+
+```
+git clone https://github.com/russo-2025/papyrus-compiler.git
+cd papyrus-compiler && git checkout b9dc9951f4264084c8ded6721b20f0d81c021d58
+<path to v>/v -prod -gc none -o bin/papyrus-compiler compiler.v
+```
+
+The script runs step 2 (`make_esp.py`), compiles every script in `src/Scripts/Source`
+against the declaration-only headers in `stubs/` (the generated `stubs/headers` and the
+hand-written ones) instead of the game's sources, and runs step 4 (`build.py`); the
+archive goes to `dist/` by default. The headers in `stubs/headers` are written by
+
+```
+python3 -I tools/gen_headers.py "<Skyrim>/Data/Scripts/Source" "<Skyrim>/Data/Source/Scripts"
+```
+
+from the installed sources of the base game, SKSE, OStim Standalone, PapyrusUtil and
+CHIM: only the types the mod uses, only their signatures, no code. Re-run it when a
+script starts using a type it did not use before (the build then fails with an
+"undefined" error).
+
+Checked against the Bethesda build of the same sources: every function calls the same
+functions with the same arguments and string literals, and every script has the same
+parent, flags, variables, properties and function signatures.
+
+## Releasing
+
+`.github/workflows/release.yml` builds the mod on GitHub; no built files are kept in the
+repository. Every push and pull request builds the whole mod and keeps the archive as the
+run's artifact *CHIM ORomance Bridge* (Actions tab -> the run -> Artifacts). To release:
+change the version (see *Versioning*), commit, tag the commit `v<version>`, push both and
+publish a GitHub release from the tag - the workflow builds the tagged commit, checks
+that its version matches the tag and attaches `CHIM ORomance Bridge.zip` to the release.
 
 ## 3. Where every file in the release comes from
 
