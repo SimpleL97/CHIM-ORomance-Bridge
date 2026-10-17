@@ -8,9 +8,13 @@
  * person (spouse, partner, ORomance like / love / dislike, Fertility Mode state, gender),
  * when each spouse or partner last shared a scene with the player, and the household
  * duties the spouses took on. Times are CHIM gamets (1 game hour = 416666.67 gamets).
+ *
+ * The other bridges of the family (CHIM OStim Bridge, CHIM Vampire Bridge) are optional:
+ * corPeer() says whether one is installed and switched on, and only reads its settings.
  */
 
 const COR_VERSION = "1.0.0";
+const COR_PLUGIN = "cor_oromance_bridge";
 const COR_CONFIG_KEY = "cor_oromance_bridge_config";
 const COR_STATE_KEY = "cor_oromance_bridge_state";
 const COR_HOUR = 416666.6667;
@@ -41,7 +45,7 @@ function corConfig(): array
     static $cfg = null;
     if ($cfg === null) {
         $defaults = [
-            "enabled" => 1, "odds" => 1, "affection" => 1, "feelings" => 1, "spouse_life" => 1,
+            "enabled" => 1, "log" => 1, "news" => 1, "odds" => 1, "affection" => 1, "feelings" => 1, "spouse_life" => 1,
             "duties" => 1, "duty" => 1, "duty_hours" => 48, "duty_names" => "",
             "children" => 1, "children_names" => "", "fertility" => 0,
         ];
@@ -76,6 +80,44 @@ function corHoursSince($then, float $now): ?float
     return max(0.0, ($now - floatval($then)) / COR_HOUR);
 }
 
+// ---------------------------------------------------------------- the other bridges
+
+/**
+ * Settings of another bridge of the family ("cob_ostim_bridge", "cov_vampire_bridge"), or
+ * null when it is not installed on this server or is switched off in its MCM. Read only:
+ * no bridge depends on another one.
+ */
+function corPeer(string $plugin): ?array
+{
+    if (!is_dir(dirname(__DIR__) . DIRECTORY_SEPARATOR . $plugin)) {
+        return null;
+    }
+    $cfg = corOptGet($plugin . "_config") ?? [];
+    return array_key_exists("enabled", $cfg) && empty($cfg["enabled"]) ? null : $cfg;
+}
+
+// ---------------------------------------------------------------- log
+
+/** HerikaServer/log/cor_oromance_bridge.log (MCM: Write a log file); kept under 2 MB */
+function corLog(string $msg): void
+{
+    static $on = null;
+    if ($on === null) {
+        $on = !empty(corConfig()["log"]);
+    }
+    if (!$on) {
+        return;
+    }
+    try {
+        $file = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . "log" . DIRECTORY_SEPARATOR . COR_PLUGIN . ".log";
+        if (@filesize($file) > 2 * 1024 * 1024) {
+            @rename($file, $file . ".1");
+        }
+        @file_put_contents($file, date("Y-m-d H:i:s") . " " . $msg . "\n", FILE_APPEND);
+    } catch (Throwable $e) {
+    }
+}
+
 /** "Name=24, Other=0" -> hours between marital-duty wishes for that spouse (0 = never), else the default */
 function corDutyHours(string $npc): int
 {
@@ -94,6 +136,7 @@ function corDutyHours(string $npc): int
 /** "cor_state" lines from COR_Events: config|{json}, people|{json}, intimate|A,B, married|Name */
 function corApplyGameState(string $data, float $now): void
 {
+    corLog("state " . mb_substr($data, 0, 300));
     if (preg_match('/config\|(\{.*\})/su', $data, $m)) {
         $cfg = json_decode($m[1], true);
         if (is_array($cfg)) {
@@ -241,7 +284,10 @@ function corPromptFor(string $npc, float $now): string
     $dirty = false;
     $spouse = !empty($me["s"]);
     $partner = !empty($me["pt"]);
-    $cobHere = function_exists('cobConfig');
+    // the OStim bridge starts scenes and may already give this NPC a hunger for sex
+    $cob = corPeer("cob_ostim_bridge");
+    $cobHere = $cob !== null;
+    $inLove = $spouse || $partner || intval($me["lo"] ?? 0) >= 4;
 
     if ($spouse && !empty($cfg["spouse_life"])) {
         $myWord = corWords($g, "wife", "husband");
@@ -272,7 +318,7 @@ function corPromptFor(string $npc, float $now): string
         }
         $lines[] = "Once a day you can cook {$player} a homemade meal: Give_Homemade_Meal.";
         $hours = corDutyHours($npc);
-        $cobHunger = $cobHere && function_exists('cobListed') && cobListed("sex_names", $npc);
+        $cobHunger = $cobHere && in_array(mb_strtolower($npc), corNames(strval($cob["sex_names"] ?? "")), true);
         if (!empty($cfg["duty"]) && $hours > 0 && !$cobHunger) {
             if (!isset($state["intimate"][$npc]) && $now > 0) {
                 $state["intimate"][$npc] = $now; // first sight as a spouse: start satisfied
@@ -293,6 +339,22 @@ function corPromptFor(string $npc, float $now): string
     if ($me !== null && !empty($cfg["feelings"])) {
         $lines[] = corFeelingText($me, $player);
     }
+    // whom the player got engaged to or married lately - for anyone who loves them
+    if ($inLove) {
+        $recent = [];
+        foreach (($state["married_at"] ?? []) as $name => $at) {
+            $h = corHoursSince($at, $now);
+            if ($h !== null && $h < 7 * 24 && mb_strtolower($name) !== mb_strtolower($npc)) {
+                $recent[] = $name;
+            }
+        }
+        if ($recent) {
+            $lines[] = ($spouse
+                    ? "{$player} has just taken another spouse: " . implode(", ", $recent) . "."
+                    : "Lately {$player} got engaged to or married " . implode(", ", $recent) . " - not you.")
+                . " How you feel about it (glad, hurt, jealous, resigned) follows your character and your feelings for {$player}.";
+        }
+    }
     if (!empty($cfg["affection"])) {
         $lines[] = "When something {$player} says or does truly touches you (a compliment that lands, a thoughtful gift, real care, a tender kiss, a declaration of love), call Feel_Affection with item compliment, gift, kindness, kiss or love; when {$player} insults or hurts you, call Feel_Hurt with item insult, cruelty or cheating. Only for moments that really matter, not for every line.";
     }
@@ -307,6 +369,19 @@ function corPromptFor(string $npc, float $now): string
             $t = corFertilityText($fm);
             if ($t !== "") {
                 $lines[] = $t . " You know this about your body and may mention it when it matters (in bed, when " . $player . " asks, when you talk about children).";
+            }
+        }
+        // the other women of the household who are expecting (Fertility Mode)
+        if ($inLove && !empty($cfg["fertility"]) && !empty($cfg["news"])) {
+            $expecting = [];
+            foreach ($people as $name => $info) {
+                $close = !empty($info["s"]) || !empty($info["pt"]) || intval($info["lo"] ?? 0) >= 4;
+                if ($close && isset($info["fm"]) && intval($info["fm"]) >= 0 && mb_strtolower($name) !== mb_strtolower($npc)) {
+                    $expecting[] = $name;
+                }
+            }
+            if ($expecting) {
+                $lines[] = "Expecting a child right now: " . implode(", ", $expecting) . ". You know it, and how you feel about it follows your character.";
             }
         }
     }

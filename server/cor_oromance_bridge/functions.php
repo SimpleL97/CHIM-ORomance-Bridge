@@ -108,6 +108,7 @@ foreach ($GLOBALS["COR_ACTIONS"] as $code => $def) {
         }
         $db->upsertRowOnConflict("conf_opts", ["id" => "cor_oromance_bridge_installed", "value" => $stamp], "id");
         error_log("[cor_oromance_bridge] actions installed/updated for " . $stamp);
+        corLog("actions installed/updated for " . $stamp);
     } catch (Throwable $e) {
         error_log("[cor_oromance_bridge] install: " . $e->getMessage());
     }
@@ -157,6 +158,7 @@ $GLOBALS["action_post_process_fnct_ex"][] = function ($actions) {
             $item = trim(str_replace(["~", "|"], " ", $item));
             $parts[2] = $actionName . "@" . $actorName . "~" . ($item === "" ? "-" : mb_strtolower($item));
             $actions[$n] = implode("|", $parts);
+            corLog("action " . $parts[2]);
         } catch (Throwable $e) {
             error_log("[cor_oromance_bridge] post_process: " . $e->getMessage());
         }
@@ -171,6 +173,7 @@ $corFuncret = function ($gameRequest) {
     $data = is_array($gameRequest) ? strval($gameRequest[3] ?? "") : "";
     $herika = $GLOBALS["HERIKA_NAME"] ?? "";
     $GLOBALS["FORCE_MAX_TOKENS"] = 120;
+    corLog("result " . mb_substr($data, 0, 300));
 
     if (strpos($data, "ExtCmdCOR_Duty") !== false && preg_match('/@([^@~]+)~[^@]*@[^@]*takes on the household duty: (.+)$/u', $data, $m)) {
         corRecordDuty(trim($m[1]), trim($m[2]));

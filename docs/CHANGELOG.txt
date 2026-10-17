@@ -12,4 +12,10 @@ CHIM ORomance Bridge - changelog
   talk to each other, share household duties and ask for the marital duty.
 - Wanting children (MCM names); optional Fertility Mode 3 support: cycle and
   pregnancy awareness, pregnancies from OStim Standalone scenes.
+- News of pregnancies and births (Fertility Mode): the AI agents around hear of them,
+  and the other spouses and partners know who is expecting (MCM).
+- The ones who love the player know whom the player lately got engaged to or married;
+  spouses know about a new spouse.
+- Works with CHIM OStim Bridge and CHIM Vampire Bridge; none of them needs another.
+- Notifications and a log file in the game and on the CHIM server (MCM: Debug).
 - MCM through MCM Helper in 12 languages; the server plugin installs itself.

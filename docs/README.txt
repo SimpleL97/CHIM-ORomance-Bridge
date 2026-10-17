@@ -18,6 +18,8 @@ REQUIREMENTS
 - SkyUI (Nexus 12604) and MCM Helper (Nexus 53000)
 
 OPTIONAL
+- CHIM Vampire Bridge (my other mod, github.com/SimpleL97/CHIM-Vampire-Bridge) -
+  vampires and thralls; see TOGETHER WITH MY OTHER MODS.
 - CHIM OStim Bridge (recommended, my other mod) - spouses start the intimate scenes
   they ask for. Not required.
     Nexus:  https://www.nexusmods.com/skyrimspecialedition/mods/194761
@@ -106,6 +108,29 @@ ovulation, ovulating, after it, on their period, pregnant (and how far) or recov
 from a birth - and so do spouses and partners. Fertility Mode's own OStim support
 only hears the player's scenes; this mod tells it about vaginal climaxes in every
 OStim Standalone scene, so NPC couples and spouses can get pregnant too.
+
+
+TOGETHER WITH MY OTHER MODS
+---------------------------
+Each mod works on its own; installed together they see each other:
+- CHIM OStim Bridge (Nexus 194761, github.com/SimpleL97/CHIM-OStim-Bridge): spouses
+  who ask for the marital duty start the scene; with its hunger for sex set for a
+  spouse, that takes the place of the marital duty here.
+- CHIM Vampire Bridge (github.com/SimpleL97/CHIM-Vampire-Bridge): vampires, the
+  bite, Vampire Lords and thralls.
+What happens in one mod reaches every AI agent nearby, so they can talk about it:
+an engagement or wedding (the ones who love you and were not asked know it, and
+your spouses know about a new spouse), a pregnancy or a birth (MCM: Children >
+"Others hear about pregnancies and births"), a scene, a thrall.
+
+
+NOTIFICATIONS AND LOG
+---------------------
+MCM > General > Debug:
+- Show notifications: every action result and every event, in the top left corner.
+- Write a log file (on by default): Data/SKSE/Plugins/CHIMORomanceBridge.log in the
+  game (a new file every time the game starts) and log/cor_oromance_bridge.log on
+  the CHIM server. Attach both to a bug report.
 
 
 COMPATIBILITY

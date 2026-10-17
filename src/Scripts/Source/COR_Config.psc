@@ -55,10 +55,25 @@ bool Function Roll(int chance) global
 	Return Utility.RandomInt(1, 100) <= chance
 EndFunction
 
+; something worth knowing: always in the log file (MCM), on screen when notifications are on
 Function Note(string msg) global
 	Debug.Trace("[CHIM ORomance Bridge] " + msg)
+	Log(msg)
 	If B("bNotify:Debug")
 		Debug.Notification("COR: " + msg)
+	EndIf
+EndFunction
+
+; Data/SKSE/Plugins/CHIMORomanceBridge.log - one game launch per file (COR_Events starts it)
+Function Log(string msg) global
+	If B("bLog:Debug")
+		MiscUtil.WriteToFile("Data/SKSE/Plugins/CHIMORomanceBridge.log", msg + "\n", True, True)
+	EndIf
+EndFunction
+
+Function NewLog() global
+	If B("bLog:Debug")
+		MiscUtil.WriteToFile("Data/SKSE/Plugins/CHIMORomanceBridge.log", "==== CHIM ORomance Bridge " + Version() + " - game started ====\n", False, True)
 	EndIf
 EndFunction
 

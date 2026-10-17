@@ -14,3 +14,9 @@ $GLOBALS["PROMPTS"]["cor_married"] = [
 $GLOBALS["PROMPTS"]["cor_wives"] = [
     "cue" => ["(If {$corNpc} is one of the spouses named above, they turn to another of them, call them by name and talk to them in character: about the husband they share, the household and who takes which duty, the children they want, or about each other - warmth, teasing, rivalry or jealousy, whatever fits their characters. If {$corNpc} is not one of them, a short remark about the spouses. One or two short lines.) {$corTail}"],
 ];
+$GLOBALS["PROMPTS"]["cor_pregnant"] = [
+    "cue" => ["({$corNpc} reacts in character to the pregnancy described above. If it is them: what it means to them - joy, fear, pride, how they tell or tease the father. If it is someone else: their honest reaction - happiness, tenderness, envy or jealousy, depending on who they are to her and to the player. One or two short lines.) {$corTail}"],
+];
+$GLOBALS["PROMPTS"]["cor_birth"] = [
+    "cue" => ["({$corNpc} reacts in character to the birth described above: if it is them, how they feel now as a mother; if it is someone else, their honest reaction to the new child. One or two short lines.) {$corTail}"],
+];

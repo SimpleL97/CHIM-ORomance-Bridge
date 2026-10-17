@@ -4,6 +4,9 @@ Scriptname COR_Events extends Quest
    cor_married    someone just got engaged to or married the player
    cor_wives      two or more of the player's spouses are together: one starts talking
                   to another (household, duties, their husband, children) - MCM chance
+   cor_pregnant   Fertility Mode says a spouse, partner or woman in love with the player
+                  is pregnant now (MCM: news of pregnancies and births)
+   cor_birth      ... or has given birth
  Silent bookkeeping (cor_state, never reaches the LLM):
    config|<json>   the MCM settings the server needs
    people|<json>   everyone near the player who matters to ORomance: spouse, partner,
@@ -17,6 +20,7 @@ bool configSent = False
 int polls = 0
 string lastPeople = ""
 float lastWivesMsg = -1000.0
+float lastRealTime = 0.0
 
 float Property PollSeconds = 5.0 AutoReadOnly Hidden
 
@@ -44,15 +48,24 @@ Function ConfigChanged()
 	Hook() ; every game load: mod event registrations added by an update reach existing saves
 	; real time restarts with the game: a cooldown saved in an earlier session would
 	; otherwise hold the next message back until the clock caught up
-	If lastWivesMsg > Utility.GetCurrentRealTime()
+	float now = Utility.GetCurrentRealTime()
+	If lastWivesMsg > now
 		lastWivesMsg = -1000.0
 	EndIf
+	; a smaller real time than last time means a new game launch: a fresh log file
+	; (loading saves within one launch keeps it)
+	If now < lastRealTime || lastRealTime == 0.0
+		COR_Config.NewLog()
+	EndIf
+	lastRealTime = now
+	COR_Config.Log("loaded; settings sent to CHIM on the next poll")
 EndFunction
 
 ; ---------------------------------------------------------------- polling
 
 Event OnUpdate()
 	polls += 1
+	lastRealTime = Utility.GetCurrentRealTime()
 	If polls == 1 || polls % 100 == 0
 		Hook()
 	EndIf
@@ -109,7 +122,9 @@ Function SendPeople()
 				j += ",\"s\":" + COR_Config.Bit(spouse) + ",\"pt\":" + COR_Config.Bit(partner)
 				j += ",\"li\":" + (like as int) + ",\"lo\":" + (love as int) + ",\"di\":" + (dislike as int)
 				If fertility && a.IsInFaction(fertility)
-					j += ",\"fm\":" + a.GetFactionRank(fertility)
+					int fm = a.GetFactionRank(fertility)
+					j += ",\"fm\":" + fm
+					PregnancyNews(a, name, fm)
 				EndIf
 				j += "}"
 			EndIf
@@ -120,6 +135,27 @@ Function SendPeople()
 	If j != lastPeople
 		lastPeople = j
 		SendState("people|" + j)
+	EndIf
+EndFunction
+
+; Fertility Mode's state changed from not pregnant to pregnant (0..127), or from pregnant to
+; recovering after a birth (-85 and below): the AI agents around hear of it. The last state
+; seen is kept per woman, so nothing is announced the first time she is seen.
+Function PregnancyNews(Actor a, string name, int fm)
+	int before = StorageUtil.GetIntValue(a, "COR_FM", -999)
+	If before == fm
+		Return
+	EndIf
+	StorageUtil.SetIntValue(a, "COR_FM", fm)
+	If before == -999 || !COR_Config.B("bNews:Children")
+		Return
+	EndIf
+	If before < 0 && before > -85 && fm >= 0
+		COR_Config.Note(name + " is pregnant")
+		AIAgentFunctions.requestMessage("(" + name + " has found out that she is pregnant)", "cor_pregnant")
+	ElseIf before >= 0 && fm <= -85
+		COR_Config.Note(name + " has given birth")
+		AIAgentFunctions.requestMessage("(" + name + " has given birth to a child)", "cor_birth")
 	EndIf
 EndFunction
 
@@ -252,6 +288,7 @@ EndEvent
 Function Married(Actor npc, string result)
 	SendState("married|" + COR_Config.Clean(npc.GetDisplayName()))
 	lastPeople = "" ; the spouse list changed: send it again on the next poll
+	COR_Config.Note(result)
 	AIAgentFunctions.requestMessage("(" + result + ")", "cor_married")
 EndFunction
 
@@ -270,6 +307,7 @@ bool Function InAnyScene(Actor a)
 EndFunction
 
 Function SendState(string s)
+	COR_Config.Log("state " + s)
 	AIAgentFunctions.requestMessage(s, "cor_state")
 EndFunction
 
@@ -278,6 +316,8 @@ Function SendConfig()
 	string j = "{"
 	j += "\"version\":\"" + COR_Config.Version() + "\""
 	j += ",\"enabled\":" + COR_Config.Bit(COR_Config.B("bEnabled:General"))
+	j += ",\"log\":" + COR_Config.Bit(COR_Config.B("bLog:Debug"))
+	j += ",\"news\":" + COR_Config.Bit(COR_Config.B("bNews:Children"))
 	j += ",\"odds\":" + COR_Config.Bit(COR_Config.B("bOdds:General"))
 	j += ",\"affection\":" + COR_Config.Bit(COR_Config.B("bAffection:Love"))
 	j += ",\"feelings\":" + COR_Config.Bit(COR_Config.B("bFeelings:Love"))

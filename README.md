@@ -46,7 +46,14 @@ release (FOMOD archive) from the Nexus Mods page instead of building it.
 - **Children**: the people named in the MCM want a child; with Fertility Mode 3 and its
   Fixes and Updates they know their cycle or pregnancy, and OStim Standalone scenes reach
   Fertility Mode.
+- **News**: a pregnancy or a birth (Fertility Mode) reaches the AI agents around; the
+  ones who love the player know whom the player lately got engaged to or married.
+- **Notifications and a log file** in the game and on the CHIM server.
 - **MCM** through MCM Helper, translated into 12 languages with English fallback.
+
+My third bridge, **CHIM Vampire Bridge** ([GitHub](https://github.com/SimpleL97/CHIM-Vampire-Bridge)),
+adds vampires and thralls. None of the three needs another; installed together they see
+each other, and what happens in one reaches every AI agent nearby.
 
 ## How it works
 

@@ -42,6 +42,15 @@
                     "valueOptions": {
                         "sourceType": "ModSettingBool"
                     }
+                },
+                {
+                    "id": "bLog:Debug",
+                    "text": "$COR_Log",
+                    "type": "toggle",
+                    "help": "$COR_LogH",
+                    "valueOptions": {
+                        "sourceType": "ModSettingBool"
+                    }
                 }
             ]
         },
@@ -305,6 +314,15 @@
                     "text": "$COR_Inseminate",
                     "type": "toggle",
                     "help": "$COR_InseminateH",
+                    "valueOptions": {
+                        "sourceType": "ModSettingBool"
+                    }
+                },
+                {
+                    "id": "bNews:Children",
+                    "text": "$COR_News",
+                    "type": "toggle",
+                    "help": "$COR_NewsH",
                     "valueOptions": {
                         "sourceType": "ModSettingBool"
                     }

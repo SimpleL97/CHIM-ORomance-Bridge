@@ -44,6 +44,7 @@ Event OnChimCommand(String npcname, String command, String parameter)
 	LastCommandKey = cmdKey
 	LastCommandTime = now
 	LastCommandNpc = npcname
+	COR_Config.Log("command " + command + " from " + npcname + ": " + parameter)
 	If !COR_Config.B("bEnabled:General")
 		Report(command, parameter, "cannot: the CHIM ORomance Bridge is turned off in its MCM")
 		Return
