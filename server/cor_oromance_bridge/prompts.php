@@ -20,3 +20,6 @@ $GLOBALS["PROMPTS"]["cor_pregnant"] = [
 $GLOBALS["PROMPTS"]["cor_birth"] = [
     "cue" => ["({$corNpc} reacts in character to the birth described above: if it is them, how they feel now as a mother; if it is someone else, their honest reaction to the new child. One or two short lines.) {$corTail}"],
 ];
+$GLOBALS["PROMPTS"]["cor_refused"] = [
+    "cue" => ["({$corNpc} wanted to do what is described above, but it did not happen in the game, for the reason given. {$corNpc} says one short line in character about it - surprise, annoyance, a joke, or what to do instead - and does not try the same action again now.) {$corTail}"],
+];

@@ -17,5 +17,9 @@ CHIM ORomance Bridge - changelog
 - The ones who love the player know whom the player lately got engaged to or married;
   spouses know about a new spouse.
 - Works with CHIM OStim Bridge and CHIM Vampire Bridge; none of them needs another.
+- Fix: a refused action ("there is a fight going on", "she is not here") is answered at
+  once, in character, with the reason. Newer CHIM versions no longer pass an action's
+  result to the mod, so the agent only learned of it in the next reply. Successful
+  actions get no extra reply; every refusal is also written to the server log.
 - Notifications and a log file in the game and on the CHIM server (MCM: Debug).
 - MCM through MCM Helper in 12 languages; the server plugin installs itself.

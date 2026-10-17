@@ -397,3 +397,38 @@ function corPromptFor(string $npc, float $now): string
     }
     return "LOVE AND MARRIAGE - {$npc} (let it shape what you say and want; do not recite it):\n- " . implode("\n- ", $lines);
 }
+
+// ---------------------------------------------------------------- refused actions
+
+/** the LLM-facing names of this bridge's actions, for the refusal event */
+const COR_ACTION_NAMES = [
+    "ExtCmdCOR_Affection" => "Feel_Affection",
+    "ExtCmdCOR_Hurt" => "Feel_Hurt",
+    "ExtCmdCOR_Partner" => "Become_Partner",
+    "ExtCmdCOR_Marry" => "Marry_Player",
+    "ExtCmdCOR_Duty" => "Take_Household_Duty",
+    "ExtCmdCOR_Meal" => "Give_Homemade_Meal",
+];
+
+/**
+ * A refused action of this bridge, as the event "cor_refused" the agent answers at once,
+ * or null. The game reports every outcome as "funcret": "command@<CodeName>@<agent>~<parameter>@<result>".
+ * Newer CHIM versions no longer call a plugin's FUNCRET handler for it (only an action's
+ * follow-up setting, which cannot tell a refusal from a success), so a refusal would only
+ * be seen in the next reply; as an event the agent says right away why it did not happen.
+ * Successful actions stay a plain funcret: no extra reply.
+ */
+function corRefusalEvent(string $data): ?string
+{
+    $parts = explode("@", $data, 4);
+    if (count($parts) < 4 || !isset(COR_ACTION_NAMES[$parts[1]])) {
+        return null;
+    }
+    $result = trim($parts[3]);
+    if (!preg_match('/^(cannot|refuses|nothing to)\b/i', $result)) {
+        return null;
+    }
+    $agent = trim(explode("~", $parts[2])[0]);
+    corLog("refused {$parts[1]} by {$agent}: {$result}");
+    return "({$agent} tried " . COR_ACTION_NAMES[$parts[1]] . ", but it did not happen - {$result})";
+}
