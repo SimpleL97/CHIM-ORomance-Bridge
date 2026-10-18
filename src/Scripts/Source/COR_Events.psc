@@ -78,6 +78,9 @@ Event OnUpdate()
 		If polls % 6 == 1
 			SendPeople()
 		EndIf
+		If polls % 6 == 4
+			COR_Romance.RepairWedding() ; an engagement the Temple of Mara never heard of
+		EndIf
 		If polls % 12 == 6
 			WivesTalk()
 		EndIf

@@ -173,6 +173,8 @@ string Function Marry(Actor npc) Global
 	main.Marry(npc)
 	string result = who + " is now married to " + you
 	If first
+		Utility.Wait(4.0) ; the spoken acceptance, if there is one, sets the stage meanwhile
+		RepairWedding(npc)
 		result = who + " and " + you + " are engaged; the wedding will be held at the Temple of Mara in Riften"
 	EndIf
 	COR_Events ev = Game.GetFormFromFile(0x000801, "CHIMORomanceBridge.esp") as COR_Events
@@ -180,6 +182,55 @@ string Function Marry(Actor npc) Global
 		ev.Married(npc, result, first)
 	EndIf
 	Return result
+EndFunction
+
+; ORomance's vanilla engagement sets RelationshipMarriage to stage 10 and has the NPC say
+; the vanilla acceptance line, whose fragment names them the love interest and sets stage
+; 20 - the stage Maramal's wedding dialogue needs. A follower with a voice of their own has
+; no such line: the quest stays at 10 with nobody in it, and the Temple of Mara knows of no
+; wedding. This does what the line would have done, for the one ORomance meant (its
+; VanillaSpouseFaction) or for npc. Returns whether it had to.
+bool Function RepairWedding(Actor npc = None) Global
+	Quest wedding = Game.GetFormFromFile(0x074793, "Skyrim.esm") as Quest ; RelationshipMarriage
+	If !wedding || !wedding.IsRunning() || wedding.GetStage() < 10 || wedding.GetStage() >= 20
+		Return False
+	EndIf
+	ReferenceAlias loveInterest = wedding.GetAlias(0) as ReferenceAlias ; LoveInterest
+	If !loveInterest || loveInterest.GetReference()
+		Return False
+	EndIf
+	If !npc
+		npc = BrideOrGroom()
+	EndIf
+	If !npc || npc.IsDead() || IsSpouse(npc)
+		Return False
+	EndIf
+	npc.AddToFaction(Game.GetFormFromFile(0x0FF7F3, "Skyrim.esm") as Faction) ; MarriageAskedFaction
+	loveInterest.ForceRefTo(npc)
+	wedding.SetStage(20)
+	COR_Config.Note(npc.GetDisplayName() + " is now the betrothed at the Temple of Mara: talk to Maramal about the wedding")
+	Return True
+EndFunction
+
+; the one ORomance Plus marked for the vanilla wedding (VanillaSpouseFaction), near the player
+Actor Function BrideOrGroom() Global
+	If !Game.IsPluginInstalled("ORomancePlus.esp")
+		Return None
+	EndIf
+	Faction chosen = Game.GetFormFromFile(0x000803, "ORomancePlus.esp") as Faction ; VanillaSpouseFaction
+	If !chosen
+		Return None
+	EndIf
+	Actor p = Game.GetPlayer()
+	Actor[] around = MiscUtil.ScanCellNPCs(p, 6000.0)
+	int i = 0
+	While i < around.Length
+		If around[i] && around[i] != p && around[i].IsInFaction(chosen) && !IsSpouse(around[i])
+			Return around[i]
+		EndIf
+		i += 1
+	EndWhile
+	Return None
 EndFunction
 
 ; ORomance's homemade meal (once a day per spouse)
