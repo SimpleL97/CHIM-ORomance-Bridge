@@ -177,7 +177,7 @@ string Function Marry(Actor npc) Global
 	EndIf
 	COR_Events ev = Game.GetFormFromFile(0x000801, "CHIMORomanceBridge.esp") as COR_Events
 	If ev
-		ev.Married(npc, result)
+		ev.Married(npc, result, first)
 	EndIf
 	Return result
 EndFunction

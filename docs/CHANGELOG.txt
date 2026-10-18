@@ -20,6 +20,8 @@ CHIM ORomance Bridge - changelog
 - With ORomance's odds on, the agent knows beforehand whether ORomance would accept a
   couple or a marriage right now, and says "not yet" in character instead of saying yes
   and then being turned down (ORomance wants a couple first, and enough love).
+- An engagement is kept apart from a marriage: the fiancee knows the wedding is waiting at
+  the Temple of Mara (Maramal) and is not treated as a wife before it.
 - The proposal line in the dialogue menu is hidden while the two are engaged and
   waiting for the wedding at the Temple of Mara.
 - Fix: a refused action ("there is a fight going on", "she is not here") is answered at

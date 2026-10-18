@@ -12,7 +12,8 @@ Scriptname COR_Events extends Quest
    people|<json>   everyone near the player who matters to ORomance: spouse, partner,
                    ORomance like / love / dislike, Fertility Mode state, gender
    intimate|A,B    a scene of the player with these spouses or partners just ended
-   married|Name    a marriage or engagement through this mod
+   married|Name    a marriage through this mod
+   engaged|Name    an engagement (the first spouse: the wedding at the Temple of Mara follows)
  Also tells Fertility Mode about vaginal climaxes in OStim Standalone scenes.}
 
 bool ready = False
@@ -295,8 +296,12 @@ EndEvent
 
 ; ---------------------------------------------------------------- marriage
 
-Function Married(Actor npc, string result)
-	SendState("married|" + COR_Config.Clean(npc.GetDisplayName()))
+Function Married(Actor npc, string result, bool engaged = False)
+	If engaged
+		SendState("engaged|" + COR_Config.Clean(npc.GetDisplayName()))
+	Else
+		SendState("married|" + COR_Config.Clean(npc.GetDisplayName()))
+	EndIf
 	lastPeople = "" ; the spouse list changed: send it again on the next poll
 	COR_Config.Note(result)
 	AIAgentFunctions.requestMessage("(" + result + ")", "cor_married")

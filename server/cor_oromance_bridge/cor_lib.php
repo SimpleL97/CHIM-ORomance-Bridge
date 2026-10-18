@@ -133,7 +133,7 @@ function corDutyHours(string $npc): int
 
 // ---------------------------------------------------------------- state from the game
 
-/** "cor_state" lines from COR_Events: config|{json}, people|{json}, intimate|A,B, married|Name */
+/** "cor_state" lines from COR_Events: config|{json}, people|{json}, intimate|A,B, married|Name, engaged|Name */
 function corApplyGameState(string $data, float $now): void
 {
     corLog("state " . mb_substr($data, 0, 300));
@@ -157,14 +157,19 @@ function corApplyGameState(string $data, float $now): void
                 $state["people"][$name] = $info;
             }
         }
-    } elseif (preg_match('/(intimate|married)\|([^()\r\n]+)/u', $data, $m)) {
+    } elseif (preg_match('/(intimate|married|engaged)\|([^()\r\n]+)/u', $data, $m)) {
         foreach (array_filter(array_map('trim', explode(",", $m[2]))) as $name) {
             if ($m[1] === "intimate") {
                 $state["intimate"][$name] = $now;
+            } elseif ($m[1] === "engaged") {
+                // engaged, not married yet: the jealousy lines count it, the spouse lines do not
+                $state["married_at"][$name] = $now;
+                $state["engaged"][$name] = $now;
             } else {
                 $state["married_at"][$name] = $now;
                 $state["intimate"][$name] = $state["intimate"][$name] ?? $now;
                 $state["people"][$name]["s"] = 1;
+                unset($state["engaged"][$name]);
             }
         }
     } else {
@@ -289,6 +294,11 @@ function corPromptFor(string $npc, float $now): string
     $cobHere = $cob !== null;
     $inLove = $spouse || $partner || intval($me["lo"] ?? 0) >= 4;
 
+    if ($spouse) {
+        unset($state["engaged"][$npc]);
+    } elseif (isset($state["engaged"][$npc])) {
+        $lines[] = "You are engaged to {$player}: the wedding will be held at the Temple of Mara in Riften - Maramal, the priest there, performs it once you both come to him. You are not married yet.";
+    }
     if ($spouse && !empty($cfg["spouse_life"])) {
         $myWord = corWords($g, "wife", "husband");
         $lines[] = "You are {$player}'s {$myWord}.";
@@ -331,7 +341,9 @@ function corPromptFor(string $npc, float $now): string
         }
     } elseif ($partner) {
         $lines[] = "You and {$player} are a couple: you are " . corWords($pg, "her", "his") . " " . corWords($g, "girlfriend", "boyfriend") . ".";
-        if (isset($me["mo"]) && empty($me["mo"])) {
+        if (isset($state["engaged"][$npc])) {
+            // already engaged: the wedding line above is all there is to know
+        } elseif (isset($me["mo"]) && empty($me["mo"])) {
             // ORomance's odds (MCM) would turn a proposal down right now
             $lines[] = "You are not ready to marry {$player} yet: it is too soon, your love has to grow and you need more time together. If {$player} proposes, say so in your own way - gently or teasingly - and do NOT call Marry_Player.";
         } else {
