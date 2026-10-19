@@ -95,7 +95,7 @@ EndEvent
 
 ; the kinds the server allows; anything else counts as the default
 string Function Kind(string item, string fallback)
-	string[] kinds = new string[8]
+	string[] kinds = new string[9]
 	kinds[0] = "compliment"
 	kinds[1] = "gift"
 	kinds[2] = "kindness"
@@ -104,6 +104,7 @@ string Function Kind(string item, string fallback)
 	kinds[5] = "insult"
 	kinds[6] = "cruelty"
 	kinds[7] = "cheating"
+	kinds[8] = "forgive"
 	int i = 0
 	While i < kinds.Length
 		If StringUtil.Find(item, kinds[i]) > -1

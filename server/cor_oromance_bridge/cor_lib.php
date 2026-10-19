@@ -192,7 +192,7 @@ function corWords(int $g, string $female, string $male): string
     return $g === 1 ? $female : $male;
 }
 
-function corFeelingText(array $p, string $player): string
+function corFeelingText(array $p, string $player, int $pg = 0): string
 {
     $li = intval($p["li"] ?? 0);
     $lo = intval($p["lo"] ?? 0);
@@ -210,12 +210,21 @@ function corFeelingText(array $p, string $player): string
     } elseif ($li >= 8) {
         $parts[] = "you like {$player}";
     }
-    if ($di >= 15) {
+    $foe = !empty($p["fo"]);
+    if ($foe) {
+        $parts[] = "but you broke with {$player} and are hostile to " . corWords($pg, "her", "him") . " now";
+    } elseif ($di >= 15) {
         $parts[] = "but right now you are angry and hurt with {$player}";
     } elseif ($di >= 5) {
         $parts[] = "but {$player} has annoyed you lately";
     }
-    return $parts ? ucfirst(implode(", ", $parts)) . "." : "";
+    $text = $parts ? ucfirst(implode(", ", $parts)) . "." : "";
+    if ($foe || $di >= 15) {
+        // ORomance itself offers no way back from a breakup but an apology that always fails
+        $text .= " If {$player} truly apologises or makes it up to you and you are ready to forgive in your own character, "
+            . "call Feel_Affection with item \"forgive\" in that reply (it counts once per real making-up; you need not take " . corWords($pg, "her", "him") . " back as a partner).";
+    }
+    return trim($text);
 }
 
 /** Fertility Mode state (rank of _JSW_SUB_TrackedFemFaction) as something she knows about her body */
@@ -360,7 +369,7 @@ function corPromptFor(string $npc, float $now): string
     }
 
     if ($me !== null && !empty($cfg["feelings"])) {
-        $lines[] = corFeelingText($me, $player);
+        $lines[] = corFeelingText($me, $player, $pg);
     }
     // whom the player got engaged to or married lately - for anyone who loves them
     if ($inLove) {

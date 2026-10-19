@@ -26,6 +26,15 @@ EndFunction
 Function increasedislikestat(Actor npc, float val)
 EndFunction
 
+Function setdislikestat(Actor npc, float val)
+EndFunction
+
+float Function gethateStat(Actor npc)
+EndFunction
+
+Function sethatestat(Actor npc, float val)
+EndFunction
+
 bool Function isPlayerPartner(Actor npc)
 EndFunction
 

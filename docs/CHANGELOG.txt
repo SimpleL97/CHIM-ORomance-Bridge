@@ -32,6 +32,11 @@ CHIM ORomance Bridge - changelog
   when a partner or spouse sees you in a scene with someone else, whatever their
   character says about sharing. On, their monogamy desire is kept below ORomance's
   jealousy line; off, ORomance's own values come back.
+- Making up: after ORomance breaks up with you (a quarrel, being caught cheating) the NPC
+  turns hostile, will not talk ("I don't like you") and runs off, and ORomance's own
+  apology always fails. Now the agent knows it and, when you truly apologise, can forgive
+  you in character (Feel_Affection "forgive"): dislike and hate go down and they are
+  friendly again. A partnership is not given back by itself.
 - Fix: a refused action ("there is a fight going on", "she is not here") is answered at
   once, in character, with the reason. Newer CHIM versions no longer pass an action's
   result to the mod, so the agent only learned of it in the next reply. Successful

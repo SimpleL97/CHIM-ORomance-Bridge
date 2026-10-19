@@ -17,9 +17,10 @@ $GLOBALS["COR_ACTIONS"] = [
         "return" => "#HERIKA_NAME# feels closer to #PLAYER_NAME#.",
         "params" => [
             "target" => "leave empty",
-            "item" => "What touched you: compliment, gift, kindness, kiss or love.",
+            "item" => "What touched you: compliment, gift, kindness, kiss, love, or forgive.",
         ],
         "description" => "Something #PLAYER_NAME# just said or did truly touched your heart: a compliment that lands, a thoughtful gift, real care or kindness, a tender kiss, a declaration of love. Call this so that it counts in your relationship. "
+            . "Item \"forgive\": you make up with #PLAYER_NAME# after a quarrel, a breakup or being cheated on, because #PLAYER_NAME# truly apologised or made amends and you are ready to let it go. "
             . "Only for moments that genuinely move you - not for every friendly line, not more than once for the same moment, and never just because you were asked to call it.",
     ],
     "ExtCmdCOR_Hurt" => [

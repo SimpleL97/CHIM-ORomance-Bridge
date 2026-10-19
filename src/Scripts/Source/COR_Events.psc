@@ -134,6 +134,10 @@ Function SendPeople()
 				j += "\"" + name + "\":{\"g\":" + a.GetActorBase().GetSex()
 				j += ",\"s\":" + COR_Config.Bit(spouse) + ",\"pt\":" + COR_Config.Bit(partner)
 				j += ",\"li\":" + (like as int) + ",\"lo\":" + (love as int) + ",\"di\":" + (dislike as int)
+				If seeded && a.GetRelationshipRank(p) < 0
+					; ORomance made them hostile (a breakup, being caught cheating): Feel_Affection "forgive" ends it
+					j += ",\"fo\":1"
+				EndIf
 				If main && seeded && !spouse
 					j += ",\"ao\":" + COR_Config.Bit(partner || main.TryAskOut(a))
 					j += ",\"mo\":" + COR_Config.Bit(main.TryPropose(a))

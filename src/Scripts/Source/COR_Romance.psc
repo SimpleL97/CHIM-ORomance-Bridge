@@ -20,6 +20,9 @@ string Function AddAffection(Actor npc, string kind) Global
 	main.SeedIfNeeded(npc)
 	string who = npc.GetDisplayName()
 	string you = Game.GetPlayer().GetDisplayName()
+	If kind == "forgive"
+		Return Forgive(npc)
+	EndIf
 	float like = COR_Config.I("iLikeGain:Love") as float
 	float love = 0.0
 	If kind == "gift"
@@ -82,6 +85,35 @@ Function SexAffection(Actor npc) Global
 		EndIf
 	EndIf
 	COR_Config.Note(npc.GetDisplayName() + " after the scene: like " + Stat(main.getlikeStat(npc)) + ", love " + Stat(main.getloveStat(npc)))
+EndFunction
+
+; Making up after a quarrel, a breakup or being caught cheating. ORomance has no way back
+; from that but its apology, which always fails once "hate" reaches 10: a breakup leaves
+; dislike at 30 and both relationship ranks at -2 (the NPC will not talk, "I don't like
+; you"). When the agent forgives in character, dislike drops by 10 and hate by 5, and a
+; hostile rank becomes friendly again; love and partnership are not given back.
+string Function Forgive(Actor npc) Global
+	ORomanceScript main = Main()
+	Actor player = Game.GetPlayer()
+	float dislike = main.getdislikeStat(npc) - 10.0
+	If dislike < 0.0
+		dislike = 0.0
+	EndIf
+	main.setdislikestat(npc, dislike)
+	float hate = main.gethateStat(npc) - 5.0
+	If hate < 0.0
+		hate = 0.0
+	EndIf
+	main.sethatestat(npc, hate)
+	If npc.GetRelationshipRank(player) < 1
+		npc.SetRelationshipRank(player, 1)
+		player.SetRelationshipRank(npc, 1)
+	EndIf
+	If npc.GetCombatTarget() == player
+		npc.StopCombat()
+	EndIf
+	COR_Config.Log(npc.GetDisplayName() + " forgives: dislike " + Stat(dislike) + ", hate " + Stat(hate))
+	Return npc.GetDisplayName() + " forgives " + player.GetDisplayName() + " (dislike " + Stat(dislike) + ")"
 EndFunction
 
 string Function AddHurt(Actor npc, string kind) Global

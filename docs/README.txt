@@ -61,7 +61,10 @@ there like any other action):
                        (compliment, gift, kindness, kiss, love): raises ORomance's
                        like, and love for kisses and declarations of love. Limited
                        per day (MCM), so one chatty evening does not win anyone over.
-  Feel_Hurt            you insulted or hurt the agent (insult, cruelty, cheating):
+                       "forgive": the agent makes up with you after a quarrel or a
+                       breakup - ORomance's dislike and hate go down and an NPC who
+                       turned hostile ("I don't like you") talks to you again.
+  Feel_Hurt           you insulted or hurt the agent (insult, cruelty, cheating):
                        raises ORomance's dislike.
   Become_Partner       the agent agrees to be your girlfriend or boyfriend.
   Marry_Player         the agent says yes to your proposal (you wear an Amulet of
