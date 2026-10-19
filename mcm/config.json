@@ -195,6 +195,15 @@
                     }
                 },
                 {
+                    "id": "bWedFollow:Spouses",
+                    "text": "$COR_WedFollow",
+                    "type": "toggle",
+                    "help": "$COR_WedFollowH",
+                    "valueOptions": {
+                        "sourceType": "ModSettingBool"
+                    }
+                },
+                {
                     "id": "bDuties:Spouses",
                     "text": "$COR_Duties",
                     "type": "toggle",

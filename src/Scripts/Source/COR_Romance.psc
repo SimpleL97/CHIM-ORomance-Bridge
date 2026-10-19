@@ -311,11 +311,14 @@ Actor Function FurtherBetrothed() Global
 	Return loveInterest.GetActorReference()
 EndFunction
 
-; The wedding itself (vanilla and ORomance Plus's own alike) dismisses the bride or groom
-; when they are the player's follower, and the wedding quest then keeps them at the temple
-; until the player has left. Whoever was following the player at the proposal is noted here
-; and, once married, made a follower again (DialogueFollower's SetFollower, which Nether's
-; Follower Framework takes over when installed).
+; MCM bWedFollow (Spouses). The wedding itself, vanilla and ORomance Plus's own alike,
+; dismisses a bride or groom who is the player's follower; its quest then holds them at the
+; temple - one line of the ceremony over and over, no dialogue menu - until the player has
+; gone and three game hours have passed, and after that they walk off to "their home".
+; With the option on, whoever followed the player at the proposal (noted here) follows again
+; the moment they are married (DialogueFollower's SetFollower, which Nether's Follower
+; Framework takes over when installed), and the wedding quest is ended once the ceremony is
+; over and married life (the FIN quest) has begun - all it still does then is wait.
 Function NoteFollowingBride(Actor npc) Global
 	Faction following = Game.GetFormFromFile(0x05C84E, "Skyrim.esm") as Faction ; CurrentFollowerFaction
 	If npc.IsPlayerTeammate() || (following && npc.GetFactionRank(following) >= 0)
@@ -323,7 +326,8 @@ Function NoteFollowingBride(Actor npc) Global
 	EndIf
 EndFunction
 
-Function RehireBrides() Global
+Function KeepBridesFollowing() Global
+	bool on = COR_Config.B("bWedFollow:Spouses")
 	int i = StorageUtil.FormListCount(None, "COR_FollowingBrides")
 	While i > 0
 		i -= 1
@@ -332,15 +336,55 @@ Function RehireBrides() Global
 			StorageUtil.FormListRemoveAt(None, "COR_FollowingBrides", i)
 		ElseIf IsSpouse(a)
 			StorageUtil.FormListRemoveAt(None, "COR_FollowingBrides", i)
-			If !a.IsPlayerTeammate()
+			If on && !a.IsPlayerTeammate()
 				DialogueFollowerScript hire = Game.GetFormFromFile(0x0750BA, "Skyrim.esm") as DialogueFollowerScript
 				If hire
 					hire.SetFollower(a)
-					COR_Config.Note(a.GetDisplayName() + " follows you again after the wedding")
+					COR_Config.Note(a.GetDisplayName() + " stays at your side after the wedding")
 				EndIf
 			EndIf
 		EndIf
 	EndWhile
+	If on
+		EndWeddingHold("RelationshipMarriageWedding", "RelationshipMarriageFIN")
+		EndWeddingHold("RelationshipMarriageWedding_OR", "RelationshipMarriageFIN_OR")
+	EndIf
+EndFunction
+
+; ends a wedding quest still holding its love interest once they are married and the quest of
+; married life has them; 10 s later, so the last lines of the ceremony are not cut
+Function EndWeddingHold(string weddingId, string marriedLifeId) Global
+	Quest wedding = Quest.GetQuest(weddingId)
+	If !wedding || !wedding.IsRunning()
+		Return
+	EndIf
+	Actor spouse = AliasActor(wedding, "LoveInterest")
+	Quest life = Quest.GetQuest(marriedLifeId)
+	If !spouse || !IsSpouse(spouse) || !life || !life.IsRunning() || AliasActor(life, "LoveInterest") != spouse
+		StorageUtil.UnsetFloatValue(wedding, "COR_WeddingOver")
+		Return
+	EndIf
+	float now = Utility.GetCurrentRealTime()
+	float over = StorageUtil.GetFloatValue(wedding, "COR_WeddingOver", -1.0)
+	If over < 0.0 || over > now ; first seen now, or a value from an earlier game session
+		StorageUtil.SetFloatValue(wedding, "COR_WeddingOver", now)
+		Return
+	EndIf
+	If now - over < 10.0
+		Return
+	EndIf
+	StorageUtil.UnsetFloatValue(wedding, "COR_WeddingOver")
+	wedding.Stop()
+	spouse.EvaluatePackage()
+	COR_Config.Log("the wedding is over: " + spouse.GetDisplayName() + " is no longer held at the temple (" + weddingId + " ended)")
+EndFunction
+
+Actor Function AliasActor(Quest q, string aliasName) Global
+	ReferenceAlias a = q.GetAliasByName(aliasName) as ReferenceAlias
+	If !a
+		Return None
+	EndIf
+	Return a.GetActorReference()
 EndFunction
 
 ; the one ORomance Plus marked for the vanilla wedding (VanillaSpouseFaction), near the player
