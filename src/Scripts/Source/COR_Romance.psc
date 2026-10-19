@@ -209,6 +209,7 @@ string Function Marry(Actor npc) Global
 	EndIf
 	Quest wedding = Game.GetFormFromFile(0x074793, "Skyrim.esm") as Quest ; RelationshipMarriage
 	bool first = wedding && !wedding.IsStopped()
+	NoteFollowingBride(npc)
 	main.Marry(npc)
 	string result = who + " is now married to " + you
 	Utility.Wait(4.0) ; the spoken acceptance, if there is one, sets the stage meanwhile
@@ -308,6 +309,38 @@ Actor Function FurtherBetrothed() Global
 		Return None
 	EndIf
 	Return loveInterest.GetActorReference()
+EndFunction
+
+; The wedding itself (vanilla and ORomance Plus's own alike) dismisses the bride or groom
+; when they are the player's follower, and the wedding quest then keeps them at the temple
+; until the player has left. Whoever was following the player at the proposal is noted here
+; and, once married, made a follower again (DialogueFollower's SetFollower, which Nether's
+; Follower Framework takes over when installed).
+Function NoteFollowingBride(Actor npc) Global
+	Faction following = Game.GetFormFromFile(0x05C84E, "Skyrim.esm") as Faction ; CurrentFollowerFaction
+	If npc.IsPlayerTeammate() || (following && npc.GetFactionRank(following) >= 0)
+		StorageUtil.FormListAdd(None, "COR_FollowingBrides", npc, False)
+	EndIf
+EndFunction
+
+Function RehireBrides() Global
+	int i = StorageUtil.FormListCount(None, "COR_FollowingBrides")
+	While i > 0
+		i -= 1
+		Actor a = StorageUtil.FormListGet(None, "COR_FollowingBrides", i) as Actor
+		If !a || a.IsDead()
+			StorageUtil.FormListRemoveAt(None, "COR_FollowingBrides", i)
+		ElseIf IsSpouse(a)
+			StorageUtil.FormListRemoveAt(None, "COR_FollowingBrides", i)
+			If !a.IsPlayerTeammate()
+				DialogueFollowerScript hire = Game.GetFormFromFile(0x0750BA, "Skyrim.esm") as DialogueFollowerScript
+				If hire
+					hire.SetFollower(a)
+					COR_Config.Note(a.GetDisplayName() + " follows you again after the wedding")
+				EndIf
+			EndIf
+		EndIf
+	EndWhile
 EndFunction
 
 ; the one ORomance Plus marked for the vanilla wedding (VanillaSpouseFaction), near the player

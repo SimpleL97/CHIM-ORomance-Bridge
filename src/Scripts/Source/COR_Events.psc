@@ -80,6 +80,7 @@ Event OnUpdate()
 		EndIf
 		If polls % 6 == 4
 			COR_Romance.RepairWedding() ; an engagement the Temple of Mara never heard of
+			COR_Romance.RehireBrides() ; the wedding dismisses a follower bride or groom
 		EndIf
 		If polls % 12 == 6
 			WivesTalk()
