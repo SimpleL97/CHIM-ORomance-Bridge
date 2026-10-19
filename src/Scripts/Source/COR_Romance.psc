@@ -171,7 +171,8 @@ string Function BecomePartner(Actor npc) Global
 EndFunction
 
 ; The way ORomance Plus's own "Propose marriage" goes when it succeeds: the first spouse
-; is engaged (vanilla wedding at the Temple of Mara), every later one is married at once.
+; is engaged (vanilla wedding at the Temple of Mara), every later one too (ORomance Plus's own
+; wedding there, RelationshipMarriage_OR).
 ; bOdds on: ORomance's own proposal check decides first. Returns the outcome for the AI.
 string Function Marry(Actor npc) Global
 	ORomanceScript main = Main()
@@ -195,6 +196,12 @@ string Function Marry(Actor npc) Global
 		Return "cannot: " + you + " is already engaged, and that wedding at the Temple of Mara has to happen first"
 	EndIf
 	If main.isORMarriageLocked()
+		Actor waiting = FurtherBetrothed()
+		If waiting == npc
+			Return "nothing to do: " + who + " and " + you + " already are engaged; the wedding at the Temple of Mara in Riften is waiting"
+		ElseIf waiting
+			Return "cannot: " + you + " is already engaged to " + waiting.GetDisplayName() + ", and that wedding at the Temple of Mara has to happen first"
+		EndIf
 		Return "cannot: ORomance Plus does not allow a marriage right now"
 	EndIf
 	If COR_Config.B("bOdds:General") && !main.TryPropose(npc)
@@ -204,10 +211,18 @@ string Function Marry(Actor npc) Global
 	bool first = wedding && !wedding.IsStopped()
 	main.Marry(npc)
 	string result = who + " is now married to " + you
+	Utility.Wait(4.0) ; the spoken acceptance, if there is one, sets the stage meanwhile
 	If first
-		Utility.Wait(4.0) ; the spoken acceptance, if there is one, sets the stage meanwhile
 		RepairWedding(npc)
 		result = who + " and " + you + " are engaged; the wedding will be held at the Temple of Mara in Riften"
+	Else
+		RepairFurtherWedding(npc)
+		If FurtherBetrothed() == npc
+			first = True ; reported as an engagement: the wedding comes first
+			result = who + " and " + you + " are engaged; the wedding will be held at the Temple of Mara in Riften"
+		ElseIf !main.IsPlayerSpouse(npc)
+			Return "cannot: ORomance Plus did not take " + who + " as a further spouse (the number of spouses it allows may be reached)"
+		EndIf
 	EndIf
 	COR_Events ev = Game.GetFormFromFile(0x000801, "CHIMORomanceBridge.esp") as COR_Events
 	If ev
@@ -242,6 +257,57 @@ bool Function RepairWedding(Actor npc = None) Global
 	wedding.SetStage(20)
 	COR_Config.Note(npc.GetDisplayName() + " is now the betrothed at the Temple of Mara: talk to Maramal about the wedding")
 	Return True
+EndFunction
+
+; ORomance Plus marries every further spouse with a wedding of its own at the Temple of Mara
+; (RelationshipMarriage_OR, its ceremony relationshipmarriagewedding_OR). The NPC says its
+; acceptance line, whose fragment (TIF__ORomanceMarriageAccept) names them the love interest,
+; locks further marriages and sets stage 20, Maramal's cue. A follower with a voice of their
+; own has no such line, so this does what the fragment would have done. Only right after
+; ORomance's Marry chose the further path (the NPC is in PotentialMarriageFaction).
+bool Function RepairFurtherWedding(Actor npc) Global
+	Quest wedding = Quest.GetQuest("RelationshipMarriage_OR")
+	GlobalVariable locked = Game.GetFormFromFile(0x000F62, "ORomancePlus.esp") as GlobalVariable
+	If !wedding || !locked || !npc || npc.IsDead() || IsSpouse(npc)
+		Return False
+	EndIf
+	If !npc.IsInFaction(Game.GetFormFromFile(0x019809, "Skyrim.esm") as Faction) ; PotentialMarriageFaction
+		Return False
+	EndIf
+	ReferenceAlias loveInterest = wedding.GetAlias(0) as ReferenceAlias ; LoveInterest
+	If !loveInterest || locked.GetValueInt() == 1
+		Return False ; the line did it, or another such wedding is waiting
+	EndIf
+	npc.AddToFaction(Game.GetFormFromFile(0x0FF7F3, "Skyrim.esm") as Faction) ; MarriageAskedFaction
+	npc.AddToFaction(Game.GetFormFromFile(0x07431A, "Skyrim.esm") as Faction) ; CourtingFaction
+	If wedding.GetStage() == 100 || wedding.GetStageDone(250)
+		wedding.Reset()
+		wedding.SetStage(10)
+		Quest ceremony = Quest.GetQuest("relationshipmarriagewedding_OR")
+		If ceremony
+			ceremony.Reset()
+		EndIf
+	EndIf
+	loveInterest.ForceRefTo(npc)
+	locked.SetValueInt(1)
+	Main().setPlayerPartner(npc, True)
+	wedding.SetStage(20)
+	COR_Config.Note(npc.GetDisplayName() + " is now betrothed at the Temple of Mara: talk to Maramal about the wedding")
+	Return True
+EndFunction
+
+; who is waiting for ORomance Plus's further wedding, if anyone
+Actor Function FurtherBetrothed() Global
+	GlobalVariable locked = Game.GetFormFromFile(0x000F62, "ORomancePlus.esp") as GlobalVariable
+	Quest wedding = Quest.GetQuest("RelationshipMarriage_OR")
+	If !locked || locked.GetValueInt() != 1 || !wedding
+		Return None
+	EndIf
+	ReferenceAlias loveInterest = wedding.GetAlias(0) as ReferenceAlias
+	If !loveInterest
+		Return None
+	EndIf
+	Return loveInterest.GetActorReference()
 EndFunction
 
 ; the one ORomance Plus marked for the vanilla wedding (VanillaSpouseFaction), near the player

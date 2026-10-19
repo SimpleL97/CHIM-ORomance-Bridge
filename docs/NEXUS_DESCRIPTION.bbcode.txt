@@ -12,7 +12,7 @@
 [*][b]Feel_Affection[/b] - a compliment that lands, a thoughtful gift, real care, a tender kiss or a declaration of love raises ORomance's like, and love for the deepest moments. Limited per day, so one chatty evening does not win anyone over. After a breakup the agent can also forgive you in character once you truly apologise - ORomance alone leaves them hostile for good.
 [*][b]Feel_Hurt[/b] - insults, cruelty and cheating raise dislike.
 [*][b]Become_Partner[/b] - the agent agrees to be your girlfriend or boyfriend.
-[*][b]Marry_Player[/b] - the agent says yes to your proposal (you wear an Amulet of Mara). The first spouse gets the vanilla engagement and the wedding at the Temple of Mara, every later one is married at once - as many spouses as ORomance Plus allows.
+[*][b]Marry_Player[/b] - the agent says yes to your proposal (you wear an Amulet of Mara). Every spouse is engaged first and married at the Temple of Mara in Riften - the first in the vanilla wedding, every later one in ORomance Plus's own ceremony there - as many spouses as ORomance Plus allows.
 [*][b]Take_Household_Duty[/b] - a spouse takes on a household duty (cooking, cleaning, guarding the house...), and all spouses remember who does what.
 [*][b]Give_Homemade_Meal[/b] - a spouse cooks you a meal (ORomance, once a day).
 [/list]

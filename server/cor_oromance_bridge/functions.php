@@ -44,7 +44,7 @@ $GLOBALS["COR_ACTIONS"] = [
         "return" => "#HERIKA_NAME# says yes to marrying #PLAYER_NAME#.",
         "params" => ["target" => "leave empty"],
         "description" => "Marry #PLAYER_NAME# for real in the game: you say yes to their proposal, or they have just said yes to yours. ONLY when #PLAYER_NAME# has clearly asked you to marry them (or clearly accepted your proposal) and you truly want it - never on your own, never as a joke or a tease, not in combat. "
-            . "#PLAYER_NAME# has to wear an Amulet of Mara. The first spouse is engaged and married at the Temple of Mara in Riften; anyone after that is married at once. Saying yes in words alone marries nobody - call this action in that same reply.",
+            . "#PLAYER_NAME# has to wear an Amulet of Mara. Every spouse, the first and any later one, is engaged and then married at the Temple of Mara in Riften (Maramal performs it). Saying yes in words alone marries nobody - call this action in that same reply.",
     ],
     "ExtCmdCOR_Duty" => [
         "name" => "Take_Household_Duty",

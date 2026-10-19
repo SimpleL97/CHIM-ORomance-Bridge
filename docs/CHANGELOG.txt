@@ -32,6 +32,11 @@ CHIM ORomance Bridge - changelog
   when a partner or spouse sees you in a scene with someone else, whatever their
   character says about sharing. On, their monogamy desire is kept below ORomance's
   jealousy line; off, ORomance's own values come back.
+- A second (third, ...) spouse gets ORomance Plus's own wedding at the Temple of Mara too,
+  as in ORomance itself, and it no longer gets stuck for a follower with a voice of their
+  own (the same missing acceptance line as with the first wedding). The agent knows it is
+  an engagement until Maramal marries you; a proposal while another wedding is waiting
+  names who is waiting.
 - Making up: after ORomance breaks up with you (a quarrel, being caught cheating) the NPC
   turns hostile, will not talk ("I don't like you") and runs off, and ORomance's own
   apology always fails. Now the agent knows it and, when you truly apologise, can forgive

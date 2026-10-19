@@ -68,8 +68,8 @@ there like any other action):
                        raises ORomance's dislike.
   Become_Partner       the agent agrees to be your girlfriend or boyfriend.
   Marry_Player         the agent says yes to your proposal (you wear an Amulet of
-                       Mara). The first spouse is engaged and married at the Temple
-                       of Mara, later ones at once (ORomance Plus polygamy).
+                       Mara). Every spouse is engaged, then married at the Temple of
+                       Mara - later ones in ORomance Plus's own ceremony there.
   Take_Household_Duty  a spouse takes on a household duty (cooking, cleaning,
                        guarding the house, ...); all spouses remember who does what.
   Give_Homemade_Meal   a spouse gives you a homemade meal (ORomance, once a day).
