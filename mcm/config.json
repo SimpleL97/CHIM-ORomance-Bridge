@@ -165,6 +165,15 @@
                     "valueOptions": {
                         "sourceType": "ModSettingBool"
                     }
+                },
+                {
+                    "id": "bShare:Love",
+                    "text": "$COR_Share",
+                    "type": "toggle",
+                    "help": "$COR_ShareH",
+                    "valueOptions": {
+                        "sourceType": "ModSettingBool"
+                    }
                 }
             ]
         },

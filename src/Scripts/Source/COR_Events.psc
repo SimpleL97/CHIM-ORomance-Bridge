@@ -115,6 +115,9 @@ Function SendPeople()
 			bool spouse = a.IsInFaction(married)
 			bool partner = StorageUtil.GetIntValue(a, "or_k_part", -1) == 1
 			bool seeded = StorageUtil.GetIntValue(a, "or_k_seeded", -1) == 1
+			If spouse || partner
+				Sharing(a, name)
+			EndIf
 			bool wants = COR_Config.InList("sWantChildren:Children", name)
 			float like = 0.0
 			float love = 0.0
@@ -308,6 +311,28 @@ Function Married(Actor npc, string result, bool engaged = False)
 	lastPeople = "" ; the spouse list changed: send it again on the next poll
 	COR_Config.Note(result)
 	AIAgentFunctions.requestMessage("(" + result + ")", "cor_married")
+EndFunction
+
+; ORomance Plus's jealousy: a partner or spouse who watches the player in an OStim scene with
+; someone else "catches them cheating" (dislike, hate, the scene ended, often a breakup) when
+; their monogamy desire (StorageUtil "or_k_monogamy", 1..100) is 16 or more - whatever their
+; character says about sharing. MCM bShare: kept at 10 for them, the old value remembered
+; ("COR_Monogamy") and given back when the option is turned off.
+Function Sharing(Actor a, string name)
+	int m = StorageUtil.GetIntValue(a, "or_k_monogamy", -1)
+	If COR_Config.B("bShare:Love")
+		If m >= 16
+			If !StorageUtil.HasIntValue(a, "COR_Monogamy")
+				StorageUtil.SetIntValue(a, "COR_Monogamy", m)
+			EndIf
+			StorageUtil.SetIntValue(a, "or_k_monogamy", 10)
+			COR_Config.Log(name + " shares the player without jealousy (ORomance monogamy " + m + " -> 10)")
+		EndIf
+	ElseIf StorageUtil.HasIntValue(a, "COR_Monogamy")
+		StorageUtil.SetIntValue(a, "or_k_monogamy", StorageUtil.GetIntValue(a, "COR_Monogamy"))
+		StorageUtil.UnsetIntValue(a, "COR_Monogamy")
+		COR_Config.Log(name + ": ORomance monogamy back to " + StorageUtil.GetIntValue(a, "or_k_monogamy"))
+	EndIf
 EndFunction
 
 ; ---------------------------------------------------------------- helpers
