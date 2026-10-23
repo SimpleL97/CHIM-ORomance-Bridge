@@ -48,6 +48,15 @@ CHIM ORomance Bridge - changelog
   apology always fails. Now the agent knows it and, when you truly apologise, can forgive
   you in character (Feel_Affection "forgive"): dislike and hate go down and they are
   friendly again. A partnership is not given back by itself.
+- Your children (MCM, Children): Fertility Mode births whose father is you are kept as
+  your children - mother, age, name once Fertility Mode gives one. The mother talks about
+  your child, everyone close to you knows the children and whose they are; the news of a
+  birth names the father.
+- Move_In (MCM, Spouses): a spouse of ORomance Plus's own weddings moves into the home you
+  agree on in conversation, and knows it is theirs.
+- Dates and anniversaries (MCM, Spouses): an evening at an inn with a spouse or partner is
+  a date. They know when the last one was, ask you out when it was long ago (MCM days),
+  and spouses know the monthly and yearly anniversaries of the wedding.
 - Fix: a refused action ("there is a fight going on", "she is not here") is answered at
   once, in character, with the reason. Newer CHIM versions no longer pass an action's
   result to the mod, so the agent only learned of it in the next reply. Successful

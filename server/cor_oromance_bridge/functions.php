@@ -61,6 +61,15 @@ $GLOBALS["COR_ACTIONS"] = [
         "params" => ["target" => "leave empty"],
         "description" => "ONLY if you are married to #PLAYER_NAME#: give them a homemade meal you cooked (once a day). Call it when you offer food or #PLAYER_NAME# asks for something to eat.",
     ],
+    "ExtCmdCOR_MoveIn" => [
+        "name" => "Move_In",
+        "return" => "#HERIKA_NAME# moves into #PLAYER_NAME#'s home.",
+        "params" => [
+            "target" => "leave empty",
+            "item" => "The home, by its English name: Breezehome (Whiterun), Honeyside (Riften), Proudspire Manor (Solitude), Hjerim (Windhelm), Vlindrel Hall (Markarth), Lakeview Manor (Falkreath), Windstad Manor (Hjaalmarch), Heljarchen Hall (the Pale), Tundra Homestead, Goldenhills Plantation, Myrwatch, Bloodchill Manor, Gallows Hall, Nchuanthumz, Hendraheim - or \"own home\" for your own house.",
+        ],
+        "description" => "ONLY if you are married to #PLAYER_NAME#: move into one of #PLAYER_NAME#'s homes (one #PLAYER_NAME# owns and names) to live there - you wait there when you are not travelling with #PLAYER_NAME#. Call it when the two of you agree where to live.",
+    ],
 ];
 
 foreach ($GLOBALS["COR_ACTIONS"] as $code => $def) {

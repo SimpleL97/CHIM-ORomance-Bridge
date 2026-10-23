@@ -110,6 +110,23 @@ Faction Function FertilityFaction() global
 	Return Game.GetFormFromFile(0x000862, "Fertility Mode 3 Fixes and Updates.esp") as Faction ; _JSW_SUB_TrackedFemFaction
 EndFunction
 
+; Fertility Mode's storage (on _JSW_BB_HandlerQuest): per tracked woman, the father of her
+; last child (LastFatherForm, same index as TrackedActors). None without the mod.
+_JSW_BB_Storage Function FMStorage() global
+	If !Game.IsPluginInstalled("Fertility Mode.esm")
+		Return None
+	EndIf
+	Return Game.GetFormFromFile(0x000D62, "Fertility Mode.esm") as _JSW_BB_Storage
+EndFunction
+
+; ORomance Plus's spouse house tracker (MoveSpouse); None without ORomance Plus
+ORomanceSpouseHouseScript Function SpouseHouses() global
+	If !Game.IsPluginInstalled("ORomancePlus.esp")
+		Return None
+	EndIf
+	Return Game.GetFormFromFile(0x00082C, "ORomancePlus.esp") as ORomanceSpouseHouseScript
+EndFunction
+
 Faction Function PlayerMarriedFaction() global
 	Return Game.GetFormFromFile(0x0C6472, "Skyrim.esm") as Faction
 EndFunction

@@ -48,6 +48,7 @@ function corConfig(): array
             "enabled" => 1, "log" => 1, "news" => 1, "odds" => 1, "affection" => 1, "feelings" => 1, "spouse_life" => 1,
             "duties" => 1, "duty" => 1, "duty_hours" => 48, "duty_names" => "",
             "children" => 1, "children_names" => "", "fertility" => 0,
+            "kids" => 1, "move_in" => 1, "dates" => 1, "date_days" => 7,
         ];
         $cfg = array_merge($defaults, corOptGet(COR_CONFIG_KEY) ?? []);
     }
@@ -155,12 +156,23 @@ function corApplyGameState(string $data, float $now): void
             if (is_array($info)) {
                 $info["seen"] = $now;
                 $state["people"][$name] = $info;
+                // the wedding day: when the game first shows them married (anniversaries)
+                if (!empty($info["s"]) && !isset($state["wed_at"][$name]) && $now > 0) {
+                    $state["wed_at"][$name] = $now;
+                }
             }
         }
-    } elseif (preg_match('/(intimate|married|engaged)\|([^()\r\n]+)/u', $data, $m)) {
+        if (isset($p["k"]) && is_array($p["k"])) {
+            $state["kids"] = array_values(array_filter($p["k"], "is_array"));
+        }
+    } elseif (preg_match('/home\|([^|()\r\n]+)\|([^()\r\n]+)/u', $data, $m)) {
+        $state["home"][trim($m[1])] = mb_convert_case(mb_substr(trim($m[2]), 0, 60), MB_CASE_TITLE); // the item comes in lower case
+    } elseif (preg_match('/(intimate|married|engaged|date)\|([^()\r\n]+)/u', $data, $m)) {
         foreach (array_filter(array_map('trim', explode(",", $m[2]))) as $name) {
             if ($m[1] === "intimate") {
                 $state["intimate"][$name] = $now;
+            } elseif ($m[1] === "date") {
+                $state["date"][$name] = $now;
             } elseif ($m[1] === "engaged") {
                 // engaged, not married yet: the jealousy lines count it, the spouse lines do not
                 $state["married_at"][$name] = $now;
@@ -225,6 +237,92 @@ function corFeelingText(array $p, string $player, int $pg = 0): string
             . "call Feel_Affection with item \"forgive\" in that reply (it counts once per real making-up; you need not take " . corWords($pg, "her", "him") . " back as a partner).";
     }
     return trim($text);
+}
+
+/** "3 days old", "2 months old", "a year old" */
+function corAgeText(int $days): string
+{
+    if ($days <= 0) {
+        return "born today";
+    }
+    if ($days < 30) {
+        return $days === 1 ? "a day old" : "{$days} days old";
+    }
+    if ($days < 365) {
+        $mo = intdiv($days, 30);
+        return $mo === 1 ? "a month old" : "{$mo} months old";
+    }
+    $y = intdiv($days, 365);
+    return $y === 1 ? "a year old" : "{$y} years old";
+}
+
+function corIsMother(array $kids, string $npc): bool
+{
+    foreach ($kids as $k) {
+        if (mb_strtolower(strval($k["m"] ?? "")) === mb_strtolower($npc)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * The player's children (Fertility Mode births, father the player), as the agent knows them:
+ * a mother her own children first, everyone close to the player all of them.
+ */
+function corKidsText(array $kids, string $npc, string $player): string
+{
+    $mine = [];
+    $others = [];
+    foreach ($kids as $k) {
+        $mother = strval($k["m"] ?? "");
+        $name = trim(strval($k["n"] ?? ""));
+        $child = ($name !== "" ? $name : "a baby not named yet") . " (" . corAgeText(intval($k["d"] ?? 0)) . ")";
+        if (mb_strtolower($mother) === mb_strtolower($npc)) {
+            $mine[] = $child;
+        } else {
+            $others[] = "{$child}, by {$mother}";
+        }
+    }
+    $out = [];
+    if ($mine) {
+        $one = count($mine) === 1;
+        $out[] = "You and {$player} have " . ($one ? "a child" : count($mine) . " children") . ": " . implode("; ", $mine)
+            . ". You are " . ($one ? "its" : "their") . " mother - you think of " . ($one ? "it" : "them") . " often and may talk about " . ($one ? "it" : "them") . ".";
+    }
+    if ($others) {
+        $out[] = "{$player}'s children" . ($mine ? " with others" : "") . ": " . implode("; ", $others) . ".";
+    }
+    return implode(" ", $out);
+}
+
+/** dates (an inn, the two of them) and wedding anniversaries, for a spouse or partner */
+function corDateLines(array $state, string $npc, string $player, int $pg, bool $spouse, float $now, int $dateDays): array
+{
+    $lines = [];
+    $him = corWords($pg, "her", "him");
+    $h = corHoursSince($state["date"][$npc] ?? null, $now);
+    if ($h === null) {
+        $lines[] = "You and {$player} have not had a date yet - an evening at an inn together.";
+    } else {
+        $d = intdiv(intval($h), 24);
+        $lines[] = "Your last date with {$player} (an evening at an inn together) was " . ($d === 0 ? "today" : ($d === 1 ? "yesterday" : "{$d} days ago")) . ".";
+    }
+    if ($h === null || $h >= $dateDays * 24) {
+        $lines[] = "You would like {$player} to take you out - an evening at an inn, a drink and a meal, just the two of you. Ask " . $him . " when the moment is right, in your own way.";
+    }
+    if ($spouse) {
+        $w = corHoursSince($state["wed_at"][$npc] ?? null, $now);
+        if ($w !== null) {
+            $days = intdiv(intval($w), 24);
+            if ($days >= 28 && $days % 30 <= 1) {
+                $months = max(1, intdiv($days + 2, 30));
+                $lines[] = ($months % 12 === 0 ? "It is " . ($months === 12 ? "a year" : intdiv($months, 12) . " years") : "It is " . ($months === 1 ? "a month" : "{$months} months"))
+                    . " since your wedding with {$player} about now - an anniversary. You would like " . $him . " to remember it.";
+            }
+        }
+    }
+    return $lines;
 }
 
 /** Fertility Mode state (rank of _JSW_SUB_TrackedFemFaction) as something she knows about her body */
@@ -336,6 +434,12 @@ function corPromptFor(string $npc, float $now): string
             }
         }
         $lines[] = "Once a day you can cook {$player} a homemade meal: Give_Homemade_Meal.";
+        if (isset($state["home"][$npc])) {
+            $lines[] = "You live in " . $state["home"][$npc] . " - that is your home with {$player}.";
+        }
+        if (!empty($cfg["move_in"])) {
+            $lines[] = "If {$player} asks you to move into one of " . corWords($pg, "her", "his") . " homes (one " . corWords($pg, "she", "he") . " owns), call Move_In with that home in item.";
+        }
         $hours = corDutyHours($npc);
         $cobHunger = $cobHere && in_array(mb_strtolower($npc), corNames(strval($cob["sex_names"] ?? "")), true);
         if (!empty($cfg["duty"]) && $hours > 0 && !$cobHunger) {
@@ -368,6 +472,11 @@ function corPromptFor(string $npc, float $now): string
         }
     }
 
+    if (($spouse || $partner) && !empty($cfg["dates"])) {
+        foreach (corDateLines($state, $npc, $player, $pg, $spouse, $now, max(1, intval($cfg["date_days"] ?? 7))) as $l) {
+            $lines[] = $l;
+        }
+    }
     if ($me !== null && !empty($cfg["feelings"])) {
         $lines[] = corFeelingText($me, $player, $pg);
     }
@@ -417,6 +526,12 @@ function corPromptFor(string $npc, float $now): string
             }
         }
     }
+    if (!empty($cfg["kids"]) && !empty($state["kids"]) && ($inLove || corIsMother($state["kids"], $npc))) {
+        $t = corKidsText($state["kids"], $npc, $player);
+        if ($t !== "") {
+            $lines[] = $t;
+        }
+    }
 
     if ($dirty) {
         corOptSet(COR_STATE_KEY, $state);
@@ -440,6 +555,7 @@ const COR_ACTION_NAMES = [
     "ExtCmdCOR_Marry" => "Marry_Player",
     "ExtCmdCOR_Duty" => "Take_Household_Duty",
     "ExtCmdCOR_Meal" => "Give_Homemade_Meal",
+    "ExtCmdCOR_MoveIn" => "Move_In",
 ];
 
 /**

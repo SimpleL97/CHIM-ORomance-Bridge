@@ -387,6 +387,80 @@ Actor Function AliasActor(Quest q, string aliasName) Global
 	Return a.GetActorReference()
 EndFunction
 
+; ---------------------------------------------------------------- where a spouse lives (MCM: bMoveIn)
+
+; ORomance Plus's names of the homes a spouse can live in (its house-select dialogue) and the
+; words that point to each (the server sends the item in lower case), in the order they are tried
+string Function HomeFor(string what) Global
+	string w = what
+	If StringUtil.Find(w, "proudspire") > -1 || StringUtil.Find(w, "solitude") > -1
+		Return "Solitude"
+	ElseIf StringUtil.Find(w, "hjerim") > -1 || StringUtil.Find(w, "windhelm") > -1
+		Return "Windhelm"
+	ElseIf StringUtil.Find(w, "vlindrel") > -1 || StringUtil.Find(w, "markarth") > -1
+		Return "Markarth"
+	ElseIf StringUtil.Find(w, "honeyside") > -1 || StringUtil.Find(w, "riften") > -1
+		Return "Riften"
+	ElseIf StringUtil.Find(w, "breezehome") > -1 || StringUtil.Find(w, "whiterun") > -1
+		Return "Whiterun"
+	ElseIf StringUtil.Find(w, "lakeview") > -1 || StringUtil.Find(w, "falkreath") > -1
+		Return "Falkreath"
+	ElseIf StringUtil.Find(w, "windstad") > -1 || StringUtil.Find(w, "hjaalmarch") > -1 || StringUtil.Find(w, "morthal") > -1
+		Return "Hjaalmarch"
+	ElseIf StringUtil.Find(w, "heljarchen") > -1 || StringUtil.Find(w, "pale") > -1 || StringUtil.Find(w, "dawnstar") > -1
+		Return "Pale"
+	ElseIf StringUtil.Find(w, "tundra") > -1
+		Return "Tundra"
+	ElseIf StringUtil.Find(w, "goldenhills") > -1
+		Return "Goldenhills"
+	ElseIf StringUtil.Find(w, "myrwatch") > -1
+		Return "Myrwatch"
+	ElseIf StringUtil.Find(w, "bloodchill") > -1
+		Return "Bloodchill"
+	ElseIf StringUtil.Find(w, "gallows") > -1
+		Return "Gallows"
+	ElseIf StringUtil.Find(w, "nchuanthumz") > -1
+		Return "Nchuanthumz"
+	ElseIf StringUtil.Find(w, "hendraheim") > -1
+		Return "Hendraheim"
+	ElseIf StringUtil.Find(w, "sanctum") > -1
+		Return "Sanctum"
+	ElseIf StringUtil.Find(w, "own") > -1 || StringUtil.Find(w, "her house") > -1 || StringUtil.Find(w, "his house") > -1
+		Return "SpouseHouse"
+	EndIf
+	Return ""
+EndFunction
+
+; A spouse of ORomance Plus's own weddings moves into one of the player's homes the way its
+; house-select dialogue does it (ORomanceSpouseHouseScript.MoveSpouse with the spouse's
+; ORomance id). The first, vanilla wedding's spouse has no such id: the game's own dialogue
+; ("let's live in ...") moves them. Which homes the player owns is not checked here - the
+; agent is told to name only one the player owns.
+string Function MoveIn(Actor npc, string what) Global
+	string who = npc.GetDisplayName()
+	If !IsSpouse(npc)
+		Return "cannot: only a spouse moves into " + Game.GetPlayer().GetDisplayName() + "'s home"
+	EndIf
+	ORomanceSpouseHouseScript houses = COR_Config.SpouseHouses()
+	If !houses
+		Return "cannot: ORomance Plus is not installed"
+	EndIf
+	string home = HomeFor(what)
+	If home == ""
+		Return "cannot: no such home of " + Game.GetPlayer().GetDisplayName() + "'s is known (" + what + ")"
+	EndIf
+	int spouseId = StorageUtil.GetIntValue(npc, "or_k_spouse_id", -1)
+	If spouseId == -1
+		Return "cannot: " + who + " was married in the vanilla wedding - " + who + " moves through the game's own dialogue: ask, and choose the home there"
+	EndIf
+	houses.MoveSpouse(npc, home, spouseId)
+	COR_Events ev = Game.GetFormFromFile(0x000801, "CHIMORomanceBridge.esp") as COR_Events
+	If ev
+		ev.SendState("home|" + COR_Config.Clean(who) + "|" + what)
+	EndIf
+	Return who + " now lives in " + what + " and waits there when not following " + Game.GetPlayer().GetDisplayName()
+EndFunction
+
 ; the one ORomance Plus marked for the vanilla wedding (VanillaSpouseFaction), near the player
 Actor Function BrideOrGroom() Global
 	If !Game.IsPluginInstalled("ORomancePlus.esp")

@@ -14,6 +14,10 @@ Scriptname COR_Events extends Quest
    intimate|A,B    a scene of the player with these spouses or partners just ended
    married|Name    a marriage through this mod
    engaged|Name    an engagement (the first spouse: the wedding at the Temple of Mara follows)
+   date|Name       the player and this spouse or partner spent time together at an inn
+   home|Name|Home  this spouse moved into that home (Move_In)
+   people|... "k"  also the player's children (Fertility Mode births by the player): mother,
+                   age in days, name
  Also tells Fertility Mode about vaginal climaxes in OStim Standalone scenes.}
 
 bool ready = False
@@ -36,6 +40,8 @@ EndEvent
 Function Hook()
 	RegisterForModEvent("ostim_actor_orgasm", "OnActorOrgasm")
 	RegisterForModEvent("ostim_thread_end", "OnSceneEnd")
+	RegisterForModEvent("FertilityModeLabor", "OnFMLabor")
+	RegisterForModEvent("FMChildRenamed", "OnFMChildRenamed")
 	COR_Bridge bridge = Game.GetFormFromFile(0x000800, "CHIMORomanceBridge.esp") as COR_Bridge
 	If bridge
 		bridge.Hook()
@@ -107,6 +113,10 @@ Function SendPeople()
 	If COR_Config.B("bOdds:General")
 		main = COR_Romance.Main()
 	EndIf
+	; an inn (LocTypeInn) with a spouse or partner close by: a date (MCM), once a game day each
+	Location here = p.GetCurrentLocation()
+	bool atInn = COR_Config.B("bDates:Spouses") && here && here.HasKeyword(Game.GetFormFromFile(0x01CB87, "Skyrim.esm") as Keyword)
+	int today = now as int
 	string j = ""
 	int i = 0
 	While i < around.Length
@@ -118,6 +128,10 @@ Function SendPeople()
 			bool seeded = StorageUtil.GetIntValue(a, "or_k_seeded", -1) == 1
 			If spouse || partner
 				Sharing(a, name)
+				If atInn && a.GetDistance(p) < 800.0 && StorageUtil.GetIntValue(a, "COR_DateDay", -1) != today
+					StorageUtil.SetIntValue(a, "COR_DateDay", today)
+					SendState("date|" + name)
+				EndIf
 			EndIf
 			bool wants = COR_Config.InList("sWantChildren:Children", name)
 			float like = 0.0
@@ -153,7 +167,7 @@ Function SendPeople()
 		EndIf
 		i += 1
 	EndWhile
-	j = "{\"pg\":" + p.GetActorBase().GetSex() + ",\"p\":{" + j + "}}"
+	j = "{\"pg\":" + p.GetActorBase().GetSex() + ",\"p\":{" + j + "}" + KidsJson(now) + "}"
 	If j != lastPeople
 		lastPeople = j
 		SendState("people|" + j)
@@ -176,9 +190,100 @@ Function PregnancyNews(Actor a, string name, int fm)
 		COR_Config.Note(name + " is pregnant")
 		AIAgentFunctions.requestMessage("(" + name + " has found out that she is pregnant)", "cor_pregnant")
 	ElseIf before >= 0 && fm <= -85
+		If Utility.GetCurrentGameTime() - StorageUtil.GetFloatValue(a, "COR_LaborAt", -100.0) < 2.0
+			Return ; already told by Fertility Mode's own labor event (OnFMLabor), with the father
+		EndIf
 		COR_Config.Note(name + " has given birth")
 		AIAgentFunctions.requestMessage("(" + name + " has given birth to a child)", "cor_birth")
 	EndIf
+EndFunction
+
+; ---------------------------------------------------------------- children (MCM: bKids)
+
+; Fertility Mode's labor event (SendTrackingEvent: name, mother, her tracking index). A child
+; of the player's is added to the bridge's list (StorageUtil, global): mother, game time of the
+; birth, name ("" until Fertility Mode names it). The father is Fertility Mode's own record;
+; failing that, the last man the bridge saw climax in her (OnActorOrgasm).
+Event OnFMLabor(string eventName, Form akSender, int index)
+	Actor mother = akSender as Actor
+	If !mother || !COR_Config.B("bEnabled:General")
+		Return
+	EndIf
+	Actor p = Game.GetPlayer()
+	Form father = None
+	_JSW_BB_Storage storage = COR_Config.FMStorage()
+	If storage && index >= 0 && index < storage.LastFatherForm.Length && storage.TrackedActors[index] == mother
+		father = storage.LastFatherForm[index]
+	EndIf
+	If !father
+		father = StorageUtil.GetFormValue(mother, "COR_LastFather")
+	EndIf
+	string name = COR_Config.Clean(mother.GetDisplayName())
+	float now = Utility.GetCurrentGameTime()
+	StorageUtil.SetFloatValue(mother, "COR_LaborAt", now)
+	string fatherName = ""
+	If father as Actor
+		fatherName = (father as Actor).GetDisplayName()
+	EndIf
+	bool mine = father == p
+	If mine && COR_Config.B("bKids:Children")
+		StorageUtil.FormListAdd(None, "COR_KidMother", mother, True)
+		StorageUtil.FloatListAdd(None, "COR_KidBorn", now, True)
+		StorageUtil.StringListAdd(None, "COR_KidName", "", True)
+		lastPeople = "" ; the children changed: sent on the next poll
+		COR_Config.Note(name + " gave birth to " + p.GetDisplayName() + "'s child")
+	EndIf
+	If COR_Config.B("bNews:Children") && (mine || mother.GetDistance(p) < 4000.0)
+		string msg = name + " has given birth to a child"
+		If fatherName != ""
+			msg += " - the father is " + fatherName
+		EndIf
+		AIAgentFunctions.requestMessage("(" + msg + ")", "cor_birth")
+	EndIf
+EndEvent
+
+; Fertility Mode names a child (FMChildRenamed: the child, its name): the newest unnamed child
+; of the player's gets it
+Event OnFMChildRenamed(Form child, string newName)
+	newName = COR_Config.Clean(newName)
+	If newName == ""
+		Return
+	EndIf
+	int i = StorageUtil.StringListCount(None, "COR_KidName")
+	While i > 0
+		i -= 1
+		If StorageUtil.StringListGet(None, "COR_KidName", i) == ""
+			StorageUtil.StringListSet(None, "COR_KidName", i, newName)
+			lastPeople = ""
+			COR_Config.Note("child named " + newName)
+			Return
+		EndIf
+	EndWhile
+EndEvent
+
+; ,"k":[{"m":mother,"d":age in days,"n":name}, ...] - the player's children, or ""
+string Function KidsJson(float now)
+	If !COR_Config.B("bKids:Children")
+		Return ""
+	EndIf
+	int n = StorageUtil.FormListCount(None, "COR_KidMother")
+	If n == 0
+		Return ""
+	EndIf
+	string j = ""
+	int i = 0
+	While i < n
+		Actor mother = StorageUtil.FormListGet(None, "COR_KidMother", i) as Actor
+		If mother
+			If j != ""
+				j += ","
+			EndIf
+			int days = (now - StorageUtil.FloatListGet(None, "COR_KidBorn", i)) as int
+			j += "{\"m\":\"" + COR_Config.Clean(mother.GetDisplayName()) + "\",\"d\":" + days + ",\"n\":\"" + StorageUtil.StringListGet(None, "COR_KidName", i) + "\"}"
+		EndIf
+		i += 1
+	EndWhile
+	Return ",\"k\":[" + j + "]"
 EndFunction
 
 ; ORomance lets like and dislike fade by 3 a game day from their last access
@@ -295,6 +400,7 @@ Event OnActorOrgasm(string eventName, string sceneId, float threadId, Form sende
 	If !mother || mother.GetActorBase().GetSex() != 1
 		Return
 	EndIf
+	StorageUtil.SetFormValue(mother, "COR_LastFather", male) ; for OnFMLabor, if Fertility Mode's own record is missing
 	int handle = ModEvent.Create("FertilityModeAddSperm")
 	If handle
 		ModEvent.PushForm(handle, mother)
@@ -377,6 +483,10 @@ Function SendConfig()
 	j += ",\"children\":" + COR_Config.Bit(COR_Config.B("bChildren:Children"))
 	j += ",\"children_names\":\"" + COR_Config.Clean(COR_Config.S("sWantChildren:Children")) + "\""
 	j += ",\"fertility\":" + COR_Config.Bit(COR_Config.B("bFertility:Children") && COR_Config.FertilityFaction() != None)
+	j += ",\"kids\":" + COR_Config.Bit(COR_Config.B("bKids:Children"))
+	j += ",\"move_in\":" + COR_Config.Bit(COR_Config.B("bMoveIn:Spouses") && COR_Config.SpouseHouses() != None)
+	j += ",\"dates\":" + COR_Config.Bit(COR_Config.B("bDates:Spouses"))
+	j += ",\"date_days\":" + COR_Config.I("iDateDays:Spouses")
 	j += "}"
 	SendState("config|" + j)
 EndFunction

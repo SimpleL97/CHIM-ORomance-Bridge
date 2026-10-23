@@ -90,6 +90,12 @@ Event OnChimCommand(String npcname, String command, String parameter)
 	ElseIf command == "ExtCmdCOR_Meal"
 		WaitUntilSilent(npc)
 		Report(command, parameter, COR_Romance.Meal(npc))
+	ElseIf command == "ExtCmdCOR_MoveIn"
+		If !COR_Config.B("bMoveIn:Spouses")
+			Report(command, parameter, "nothing to do: moving spouses is turned off in the MCM")
+			Return
+		EndIf
+		Report(command, parameter, COR_Romance.MoveIn(npc, item))
 	EndIf
 EndEvent
 

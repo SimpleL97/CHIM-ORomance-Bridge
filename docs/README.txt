@@ -73,6 +73,9 @@ there like any other action):
   Take_Household_Duty  a spouse takes on a household duty (cooking, cleaning,
                        guarding the house, ...); all spouses remember who does what.
   Give_Homemade_Meal   a spouse gives you a homemade meal (ORomance, once a day).
+  Move_In              a spouse of ORomance Plus's own weddings moves into the home
+                       you agree on (ORomance's own house-select; MCM). The first,
+                       vanilla wedding's spouse moves through the game's dialogue.
 Every outcome is reported back to CHIM, so a refusal ("not enough love yet", "you
 are already engaged") is answered in character instead of failing quietly.
 
@@ -103,7 +106,11 @@ Married life (any number of spouses):
     the more openly they ask for it, sweetly or sharply as their character is
     (MCM: usual wait, and per spouse "Name=hours", 0 = never). With CHIM OStim Bridge
     they start the scene themselves; a spouse already listed for hunger for sex in
-    CHIM OStim Bridge uses that instead.
+    CHIM OStim Bridge uses that instead;
+  - dates and anniversaries (MCM): an evening at an inn with a spouse or partner is a
+    date; they know when the last one was and ask you out when it was long ago (MCM
+    days), and spouses know the monthly and yearly anniversaries of the wedding;
+  - a spouse who moved in (Move_In) knows that home is theirs.
 
 Children (MCM: names): the people listed want a child with you and show it. With
 Fertility Mode 3 and its Fixes and Updates they also know whether they are before
@@ -111,6 +118,10 @@ ovulation, ovulating, after it, on their period, pregnant (and how far) or recov
 from a birth - and so do spouses and partners. Fertility Mode's own OStim support
 only hears the player's scenes; this mod tells it about vaginal climaxes in every
 OStim Standalone scene, so NPC couples and spouses can get pregnant too.
+Your children (MCM): Fertility Mode births whose father is you are kept as your
+children - mother, age, and the name once Fertility Mode gives one. The mother talks
+about your child; everyone close to you knows the children and whose they are. News
+of a birth names the father.
 
 
 TOGETHER WITH MY OTHER MODS
