@@ -40,8 +40,8 @@ env:
   # release is only attached on GitHub. Secret NEXUSMODS_API_KEY (environment "Nexus" or the
   # repository's secrets): personal API key from nexusmods.com/settings/api-keys.
   # The page: nexusmods.com/skyrimspecialedition/mods/198436
-  MOD_ID: ""
-  FILE_ID: ""
+  MOD_ID: "7318624470820"   # "Unique Mod ID" (the changelog goes to /mods/<id>/changelogs)
+  FILE_ID: "8340303"        # "File ID" of the main file "CHIM ORomance Bridge"; new versions are added to it
   ARCHIVE: "dist/CHIM ORomance Bridge.zip"
   # papyrus-compiler master with the string escape fix (issue 19), after release 0.0.4
   PAPYRUS_COMPILER_COMMIT: b9dc9951f4264084c8ded6721b20f0d81c021d58
