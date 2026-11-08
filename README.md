@@ -17,8 +17,12 @@ optional but recommended dependency: with it, spouses start the intimate scenes 
 > **Adult content.** This mod deals with sexual content in a video game and is meant
 > for adults only.
 
-This repository is the complete source of the mod. Players should download the packaged
-release (FOMOD archive) from the Nexus Mods page instead of building it.
+> **Status: 1.0.0 is in development and not released yet**, on Nexus or as a GitHub
+> release. Marriage and everything around it was planned for CHIM OStim Bridge 1.2 and
+> lives here instead; CHIM OStim Bridge has none of it.
+
+This repository is the complete source of the mod. Once it is released, players should
+download the packaged release (FOMOD archive) instead of building it.
 
 - **[BUILDING.md](BUILDING.md)** - how to build the release from these sources, step by
   step, and where every file in the release comes from
@@ -28,32 +32,80 @@ release (FOMOD archive) from the Nexus Mods page instead of building it.
 
 ## What it does
 
-- **AI actions** added to CHIM's action list, all done through ORomance Plus:
-  `Feel_Affection` / `Feel_Hurt` (ORomance like, love, dislike), `Become_Partner`,
-  `Marry_Player` (first spouse: engagement and the Temple of Mara wedding; later ones at
-  once), `Take_Household_Duty`, `Give_Homemade_Meal`. Every result is reported back to
-  the AI, so a refusal ("not enough love yet") is answered in character.
-- **ORomance's odds** for partners and marriage can be used or left out (MCM).
-- **The proposal line**: ORomance Plus hides the vanilla marriage dialogue; the mod puts
-  "(Amulet of Mara) Will you marry me?" back into the normal dialogue menu.
-- **Love from sex**: every OStim scene with the player raises ORomance like and love,
-  up to ORomance's own ceilings (10 / partner 20 / spouse 30).
-- **Feelings in words**: each agent's ORomance like, love and dislike for the player go
-  into their prompt.
-- **Married life**: spouses know their marriage and each other, start conversations with
-  each other, share household duties, and ask for the marital duty after a wait set per
-  spouse in the MCM (scenes start through CHIM OStim Bridge).
-- **Children**: the people named in the MCM want a child; with Fertility Mode 3 and its
-  Fixes and Updates they know their cycle or pregnancy, and OStim Standalone scenes reach
-  Fertility Mode.
-- **News**: a pregnancy or a birth (Fertility Mode) reaches the AI agents around; the
-  ones who love the player know whom the player lately got engaged to or married.
-- **Notifications and a log file** in the game and on the CHIM server.
-- **MCM** through MCM Helper, translated into 12 languages with English fallback.
+**AI actions** added to CHIM's action list. All are done through ORomance Plus, and each can
+be switched off there:
 
-My third bridge, **CHIM Vampire Bridge** ([GitHub](https://github.com/SimpleL97/CHIM-Vampire-Bridge)),
-adds vampires and thralls. None of the three needs another; installed together they see
-each other, and what happens in one reaches every AI agent nearby.
+| Action | What the agent does |
+|---|---|
+| `Feel_Affection` | something you said or did truly touched them (a compliment, a gift, a kiss, a declaration of love): raises ORomance like, and love for kisses and declarations. Limited per day (MCM). With "forgive", they make up after a quarrel or a breakup: dislike and hate go down, and a hostile NPC talks to you again. |
+| `Feel_Hurt` | you insulted or hurt them (an insult, cruelty, cheating): raises ORomance dislike |
+| `Become_Partner` | they agree to be your girlfriend or boyfriend |
+| `Marry_Player` | they say yes to your proposal (you wear an Amulet of Mara). Every spouse is engaged, then married at the Temple of Mara; later ones in ORomance Plus's own ceremony. A wedding that got stuck is repaired. |
+| `Take_Household_Duty` | a spouse takes on a duty (cooking, cleaning, guarding the house...). All spouses remember who does what. |
+| `Give_Homemade_Meal` | a spouse gives you a homemade meal (ORomance, once a day) |
+| `Move_In` | a spouse moves into the home you agree on (ORomance's own house-select; MCM) |
+
+Every result is reported back to the AI, so a refusal ("not enough love yet", "you are
+already engaged") is answered in character.
+
+**Love**
+- **ORomance's odds** for becoming a couple and for marriage (love, level, Speech, fame)
+  can be used or left out (MCM). Left out, the agent's yes and the amulet are enough.
+- **The proposal line:** ORomance Plus hides the vanilla marriage dialogue. The mod puts
+  "(Amulet of Mara) Will you marry me?" back into the normal dialogue menu.
+- **Love from sex:** every OStim scene with you raises ORomance like and love, up to
+  ORomance's own ceilings (10, partner 20, spouse 30). Aggressive scenes do not count.
+- **Feelings in words:** each agent's ORomance like, love and dislike for you go into
+  their prompt, so what they say fits the game.
+
+**Married life** (any number of spouses)
+- Spouses know their marriage and each other.
+- When together, now and then they talk to each other: about you, the household, the
+  children they want.
+- **The marital duty:** after a wait set per spouse (MCM), they ask for it more and more
+  openly, each in their own character. With CHIM OStim Bridge they start the scene.
+- **Dates and anniversaries:** an evening at an inn is a date. A spouse or partner asks
+  you out when the last date was long ago, and spouses know the wedding's anniversaries.
+- A spouse who moved in knows that home is theirs.
+
+**Children** (MCM: names)
+- The people listed want a child with you.
+- With Fertility Mode 3 and its Fixes and Updates they know their cycle or pregnancy:
+  before ovulation, ovulating, on their period, how far along, recovering from a birth.
+- Every OStim Standalone scene reaches Fertility Mode, NPC couples' scenes too.
+- Births whose father is you are kept as your children, with the mother, the age and the
+  name. Everyone close to you knows them.
+
+**News:** an engagement, a wedding, a pregnancy or a birth reaches the AI agents around.
+The ones who love you know whom you lately got engaged to or married, and your spouses
+know about a new spouse.
+
+**Also:** notifications and a log file in the game and on the CHIM server, and an MCM
+through MCM Helper in 12 languages with English fallback.
+
+## My CHIM mods
+
+| Mod | What it adds | Get it |
+|---|---|---|
+| **CHIM OStim Bridge** | AI agents start, change and end OStim scenes; reactions, talk and cries of passion during scenes; needs | [Nexus](https://www.nexusmods.com/skyrimspecialedition/mods/194761) · [GitHub](https://github.com/SimpleL97/CHIM-OStim-Bridge) |
+| **CHIM ORomance Bridge** (this one) | love, partners and marriage (several spouses) through ORomance Plus, married life, children with Fertility Mode | [GitHub](https://github.com/SimpleL97/CHIM-ORomance-Bridge) (Nexus later) |
+| **CHIM Vampire Bridge** | vampires: blood thirst, the bite, Vampire Lords, thralls who obey | [GitHub](https://github.com/SimpleL97/CHIM-Vampire-Bridge) (Nexus later) |
+| **CHIM Travel Fix** | Travel_To goes to the place the agent named, in any game language, not a random one; a spouse sent "home" finds the house | [GitHub](https://github.com/SimpleL97/CHIM-Travel-Fix) (Nexus later) |
+
+Each works on its own, and none needs another. Installed together, they see each other:
+- spouses who ask for the marital duty start the scene through CHIM OStim Bridge;
+- a spouse listed there for hunger for sex gets that instead of the marital duty here;
+- what happens in one mod reaches every AI agent nearby.
+
+## Supported mods
+
+| Mod | | |
+|---|---|---|
+| [CHIM](https://www.nexusmods.com/skyrimspecialedition/mods/126330) | required | plugin and server; tested with 3.4.2 |
+| [ORomance Plus](https://www.nexusmods.com/skyrimspecialedition/mods/81635) | required | with its own requirements, among them [ORomance](https://www.nexusmods.com/skyrimspecialedition/mods/48564) |
+| [OStim Standalone](https://www.nexusmods.com/skyrimspecialedition/mods/98163) | required | tested with 7.5.1 |
+| [PapyrusUtil SE/AE](https://www.nexusmods.com/skyrimspecialedition/mods/13048), [SkyUI](https://www.nexusmods.com/skyrimspecialedition/mods/12604), [MCM Helper](https://www.nexusmods.com/skyrimspecialedition/mods/53000), [Address Library](https://www.nexusmods.com/skyrimspecialedition/mods/32444) | required | |
+| [Fertility Mode 3](https://www.nexusmods.com/skyrimspecialedition/mods/13068) + [Fixes and Updates](https://www.nexusmods.com/skyrimspecialedition/mods/46820) | optional | cycle, pregnancy, births, children |
 
 ## How it works
 
