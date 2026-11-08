@@ -35,7 +35,7 @@ INSTALLATION
 2. Start the CHIM server as usual, then the game. The server side installs itself:
    the mod ships it as Data/CHIM/server-plugins/cor_oromance_bridge/1.0.0.dwpkg, and
    CHIM's game plugin uploads bundled server plugins to its server at startup
-   (HerikaServer/ext/cor_oromance_bridge). The six actions are added to CHIM's action
+   (HerikaServer/ext/cor_oromance_bridge). The seven actions are added to CHIM's action
    list on the first request.
 3. Load a save. The MCM "CHIM ORomance Bridge" appears after a few seconds.
 
@@ -46,7 +46,7 @@ CHIM ORomance Bridge Server Tools/Install-ServerPlugin.bat once.
 
 Updating: install the new version; CHIM updates the server side on the next start.
 Uninstalling: run Uninstall-ServerPlugin.bat from the manual tools (removes the server
-folder and the six actions), then remove the mod.
+folder and the seven actions), then remove the mod.
 
 The MCM is translated into English, Russian, Ukrainian, German, French, Spanish,
 Italian, Polish, Czech, Portuguese, Japanese and Chinese and follows the game

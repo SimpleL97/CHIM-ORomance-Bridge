@@ -37,6 +37,11 @@ FILE UPLOAD
   Category:        Main Files
   Description:     First release. FOMOD installer; the CHIM server plugin installs itself at game start.
 
+AFTER THE FIRST UPLOAD
+  Put the mod id (from the page address) and the file id (from the main file's download link)
+  into MOD_ID / FILE_ID in .github/workflows/release.yml: from then on a GitHub release is
+  uploaded to Nexus as a new version of that file by itself.
+
 PERMISSIONS (suggested, as for CHIM OStim Bridge)
   Upload to other sites:   ask first
   Modify and re-release:   ask first
