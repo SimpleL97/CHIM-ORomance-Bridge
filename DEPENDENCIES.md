@@ -25,7 +25,7 @@ Built the same way, by the same author, and tested together with this one.
 |---|---|
 | **CHIM OStim Bridge** ([Nexus](https://www.nexusmods.com/skyrimspecialedition/mods/194761) · [GitHub](https://github.com/SimpleL97/CHIM-OStim-Bridge)) | Starts the OStim scenes: spouses asking for the marital duty start the scene with its `Start_Intimate_Scene` (the prompt mentions that action only when it is installed); a spouse listed there for hunger for sex gets that instead of the marital duty here. Scenes, needs and reactions reach the agents here. |
 | **CHIM Vampire Bridge** ([Nexus](https://www.nexusmods.com/skyrimspecialedition/mods/198441) · [GitHub](https://github.com/SimpleL97/CHIM-Vampire-Bridge)) | Vampires, Vampire Lords and thralls; a thrall bound, an NPC turned into a vampire reach the agents here. |
-| **CHIM Travel Fix** ([GitHub](https://github.com/SimpleL97/CHIM-Travel-Fix)) | Not connected to this mod: a CHIM server plugin that makes CHIM's own Travel_To go to the place the agent named, in any game language, instead of a random one - a spouse sent "home" finds the house. |
+| **CHIM Travel Fix** ([Nexus](https://www.nexusmods.com/skyrimspecialedition/mods/198442) · [GitHub](https://github.com/SimpleL97/CHIM-Travel-Fix)) | Not connected to this mod: a CHIM server plugin that makes CHIM's own Travel_To go to the place the agent named, in any game language, instead of a random one - a spouse sent "home" finds the house. |
 
 None of them is required and none requires another; each works on its own. Installed together they
 see each other: in the game they share only the StorageUtil list `COV_Thralls`; on the CHIM

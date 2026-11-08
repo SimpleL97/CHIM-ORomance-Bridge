@@ -68,7 +68,7 @@ Each works on its own; installed together they see each other - what happens in 
 [list]
 [*][b]CHIM OStim Bridge[/b] - [url=https://www.nexusmods.com/skyrimspecialedition/mods/194761]Nexus[/url] · [url=https://github.com/SimpleL97/CHIM-OStim-Bridge]GitHub[/url]. AI agents start, change and end OStim scenes; reactions, talk and cries of passion during scenes; needs.
 [*][b]CHIM Vampire Bridge[/b] - [url=https://www.nexusmods.com/skyrimspecialedition/mods/198441]Nexus[/url] · [url=https://github.com/SimpleL97/CHIM-Vampire-Bridge]GitHub[/url]. Vampires, the bite, Vampire Lords and thralls who obey.
-[*][b]CHIM Travel Fix[/b] - [url=https://github.com/SimpleL97/CHIM-Travel-Fix]GitHub[/url]. CHIM's Travel_To goes to the place the agent named, in any game language - a spouse sent home finds the house.
+[*][b]CHIM Travel Fix[/b] - [url=https://www.nexusmods.com/skyrimspecialedition/mods/198442]Nexus[/url] · [url=https://github.com/SimpleL97/CHIM-Travel-Fix]GitHub[/url]. CHIM's Travel_To goes to the place the agent named, in any game language - a spouse sent home finds the house.
 [/list]
 
 [size=4][b]Requirements[/b][/size]

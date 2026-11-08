@@ -136,7 +136,7 @@ What happens in one mod reaches every AI agent nearby, so they can talk about it
 an engagement or wedding (the ones who love you and were not asked know it, and
 your spouses know about a new spouse), a pregnancy or a birth (MCM: Children >
 "Others hear about pregnancies and births"), a scene, a thrall.
-- CHIM Travel Fix (github.com/SimpleL97/CHIM-Travel-Fix): not connected to this
+- CHIM Travel Fix (Nexus 198442, github.com/SimpleL97/CHIM-Travel-Fix): not connected to this
   mod - CHIM's own Travel_To goes to the place the agent named, in any game
   language, instead of a random one: a spouse sent home finds the house.
 
