@@ -3,6 +3,7 @@ CHIM ORomance Bridge - values for the Nexus Mods upload form
 
 MOD PAGE
   Name:            CHIM ORomance Bridge
+  Page:            https://www.nexusmods.com/skyrimspecialedition/mods/198436
   Author:          SaurOff
   Version:         1.0.0
   Category:        Gameplay   (Skyrim SE has no separate adult category; adult content is a flag)

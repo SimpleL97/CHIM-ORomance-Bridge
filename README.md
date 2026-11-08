@@ -17,12 +17,11 @@ optional but recommended dependency: with it, spouses start the intimate scenes 
 > **Adult content.** This mod deals with sexual content in a video game and is meant
 > for adults only.
 
-> **Status: 1.0.0 is in development and not released yet**, on Nexus or as a GitHub
-> release. Marriage and everything around it was planned for CHIM OStim Bridge 1.2 and
+> **Nexus page: [CHIM ORomance Bridge](https://www.nexusmods.com/skyrimspecialedition/mods/198436)** - download the packaged release there. Marriage and everything around it was planned for CHIM OStim Bridge 1.2 and
 > lives here instead; CHIM OStim Bridge has none of it.
 
-This repository is the complete source of the mod. Once it is released, players should
-download the packaged release (FOMOD archive) instead of building it.
+This repository is the complete source of the mod. Players should download the packaged
+release (FOMOD archive) from the [Nexus page](https://www.nexusmods.com/skyrimspecialedition/mods/198436) instead of building it.
 
 - **[BUILDING.md](BUILDING.md)** - how to build the release from these sources, step by
   step, and where every file in the release comes from
@@ -88,7 +87,7 @@ through MCM Helper in 12 languages with English fallback.
 | Mod | What it adds | Get it |
 |---|---|---|
 | **CHIM OStim Bridge** | AI agents start, change and end OStim scenes; reactions, talk and cries of passion during scenes; needs | [Nexus](https://www.nexusmods.com/skyrimspecialedition/mods/194761) · [GitHub](https://github.com/SimpleL97/CHIM-OStim-Bridge) |
-| **CHIM ORomance Bridge** (this one) | love, partners and marriage (several spouses) through ORomance Plus, married life, children with Fertility Mode | [GitHub](https://github.com/SimpleL97/CHIM-ORomance-Bridge) (Nexus later) |
+| **CHIM ORomance Bridge** (this one) | love, partners and marriage (several spouses) through ORomance Plus, married life, children with Fertility Mode | [Nexus](https://www.nexusmods.com/skyrimspecialedition/mods/198436) · [GitHub](https://github.com/SimpleL97/CHIM-ORomance-Bridge) |
 | **CHIM Vampire Bridge** | vampires: blood thirst, the bite, Vampire Lords, thralls who obey | [GitHub](https://github.com/SimpleL97/CHIM-Vampire-Bridge) (Nexus later) |
 | **CHIM Travel Fix** | Travel_To goes to the place the agent named, in any game language, not a random one; a spouse sent "home" finds the house | [GitHub](https://github.com/SimpleL97/CHIM-Travel-Fix) (Nexus later) |
 
