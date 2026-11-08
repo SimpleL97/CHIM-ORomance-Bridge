@@ -18,7 +18,7 @@ REQUIREMENTS
 - SkyUI (Nexus 12604) and MCM Helper (Nexus 53000)
 
 OPTIONAL
-- CHIM Vampire Bridge (my other mod, github.com/SimpleL97/CHIM-Vampire-Bridge) -
+- CHIM Vampire Bridge (my other mod, Nexus 198441, github.com/SimpleL97/CHIM-Vampire-Bridge) -
   vampires and thralls; see TOGETHER WITH MY OTHER MODS.
 - CHIM OStim Bridge (recommended, my other mod) - spouses start the intimate scenes
   they ask for. Not required.
@@ -130,7 +130,7 @@ Each mod works on its own; installed together they see each other:
 - CHIM OStim Bridge (Nexus 194761, github.com/SimpleL97/CHIM-OStim-Bridge): spouses
   who ask for the marital duty start the scene; with its hunger for sex set for a
   spouse, that takes the place of the marital duty here.
-- CHIM Vampire Bridge (github.com/SimpleL97/CHIM-Vampire-Bridge): vampires, the
+- CHIM Vampire Bridge (Nexus 198441, github.com/SimpleL97/CHIM-Vampire-Bridge): vampires, the
   bite, Vampire Lords and thralls.
 What happens in one mod reaches every AI agent nearby, so they can talk about it:
 an engagement or wedding (the ones who love you and were not asked know it, and
